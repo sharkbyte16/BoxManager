@@ -18,9 +18,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Main"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="221"/>
+        <TopLine Value="206"/>
         <CursorPos X="35" Y="250"/>
         <UsageCount Value="47"/>
         <Loaded Value="True"/>
@@ -30,10 +29,25 @@
         <Filename Value="data86box.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Data86box"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <CursorPos X="21" Y="86"/>
+        <TopLine Value="4"/>
+        <CursorPos X="16" Y="11"/>
         <UsageCount Value="46"/>
         <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="options.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="OptionsForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="Options"/>
+        <EditorIndex Value="3"/>
+        <CursorPos X="13"/>
+        <UsageCount Value="24"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="/usr/share/lazarus/2.2.6/components/lazutils/laztracer.pas"/>
@@ -43,20 +57,8 @@
         <CursorPos Y="50"/>
         <UsageCount Value="9"/>
       </Unit>
-      <Unit>
-        <Filename Value="options.pas"/>
-        <IsPartOfProject Value="True"/>
-        <ComponentName Value="OptionsForm"/>
-        <ResourceBaseClass Value="Form"/>
-        <UnitName Value="Options"/>
-        <EditorIndex Value="3"/>
-        <CursorPos X="13"/>
-        <UsageCount Value="24"/>
-        <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
-      </Unit>
     </Units>
-    <JumpHistory HistoryIndex="29">
+    <JumpHistory HistoryIndex="28">
       <Position>
         <Filename Value="main.pas"/>
         <Caret Line="231" Column="3" TopLine="137"/>
@@ -168,10 +170,6 @@
       <Position>
         <Filename Value="data86box.pas"/>
         <Caret Line="135" Column="58" TopLine="87"/>
-      </Position>
-      <Position>
-        <Filename Value="data86box.pas"/>
-        <Caret Line="31" TopLine="87"/>
       </Position>
       <Position>
         <Filename Value="data86box.pas"/>

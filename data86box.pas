@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Dialogs, StrUtils;
 
 const
-  APPDIR = '~/.86boxmanager/';
+  APPDIR = '~/.boxmanager/';
   VMDIR = APPDIR + 'VMs/';
   VMEXT = '.cfg';
   CFGFILE = 'config.txt';
