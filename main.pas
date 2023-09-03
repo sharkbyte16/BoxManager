@@ -112,32 +112,33 @@ var
 begin
   ListWasEmpty := (ConfigListBox.Items.Count = 0);
   NewName := '';
-  InputQuery('New config','Enter name:', NewName);
-  NewDir := PathData.GetVMConfigsPath+NewName+'/';
-  NewFileName := NewDir+NewName+VMEXT;
-  OK := True;
-  if DirectoryExists(NewDir) then begin
-    ShowMessage(NewDir+' already exists');
-    OK := False;
-  end;
-  if FileExists(NewFileName) then begin
-    ShowMessage(NewName+' already exists');
-    OK := False;
-  end;
-  if OK then OK := CreateDir(NewDir);
-  if OK then begin
-    CmdLine := '--settings "'+NewFileName+'"';
-    ExecuteProcess(UTF8ToSys(PathData.GetBinaryPath), UTF8ToSys(CmdLine));
-  end;
-  if FileExists(NewFileName) then ConfigListBox.Items.Add(NewName)
-    else RemoveDir(NewDir);
-  if ListWasEmpty then begin
-    ConfigListBox.ItemIndex := 0;
-    SpeedButtonRename.Enabled := True;
-    SpeedButtonCopy.Enabled := True;
-    SpeedButtonDelete.Enabled := True;
-    SpeedButtonSettings.Enabled := True;
-    SpeedButtonLaunch.Enabled := True;
+  if InputQuery('New config','Enter name:', NewName) then begin;
+    NewDir := PathData.GetVMConfigsPath+NewName+'/';
+    NewFileName := NewDir+NewName+VMEXT;
+    OK := True;
+    if DirectoryExists(NewDir) then begin
+      ShowMessage(NewDir+' already exists');
+      OK := False;
+    end;
+    if FileExists(NewFileName) then begin
+      ShowMessage(NewName+' already exists');
+      OK := False;
+    end;
+    if OK then OK := CreateDir(NewDir);
+    if OK then begin
+      CmdLine := '--settings "'+NewFileName+'"';
+      ExecuteProcess(UTF8ToSys(PathData.GetBinaryPath), UTF8ToSys(CmdLine));
+    end;
+    if FileExists(NewFileName) then ConfigListBox.Items.Add(NewName)
+      else RemoveDir(NewDir);
+    if ListWasEmpty then begin
+      ConfigListBox.ItemIndex := 0;
+      SpeedButtonRename.Enabled := True;
+      SpeedButtonCopy.Enabled := True;
+      SpeedButtonDelete.Enabled := True;
+      SpeedButtonSettings.Enabled := True;
+      SpeedButtonLaunch.Enabled := True;
+    end;
   end;
 end;
 
@@ -152,19 +153,25 @@ begin
     Item := ConfigListBox.Items[ItemIndex];
     OldDirName := PathData.GetVMConfigsPath+Item+'/';
     NewName := Item;
-    InputQuery('New name','Enter name:', NewName);
-    NewDirName := PathData.GetVMConfigsPath+NewName+'/';
-    NewDirOldFile :=  NewDirName+Item+VMEXT;
-    NewFileName := NewDirName+NewName+VMEXT;
-    if FileExists(NewFileName) then begin
-      ShowMessage(NewName+' already exists')
-    end
-    else begin
-      if RenameFile(OldDirName, NewDirName) then
-        if RenameFile(NewDirOldFile, NewFileName) then ConfigListBox.Items[ItemIndex] := NewName
-          else ShowMessage('Error renaming file '+NewDirOldFile)
-      else
-        ShowMessage('Error renaming directory '+OldDirName);
+    if InputQuery('New name','Enter name:', NewName) then begin ;
+      NewDirName := PathData.GetVMConfigsPath+NewName+'/';
+      NewDirOldFile :=  NewDirName+Item+VMEXT;
+      NewFileName := NewDirName+NewName+VMEXT;
+      if FileExists(NewFileName) then begin
+        ShowMessage(NewName+' already exists')
+      end
+      else begin
+        if RenameFile(OldDirName, NewDirName) then
+          if RenameFile(NewDirOldFile, NewFileName) then begin
+              ConfigListBox.Sorted := False;
+              ConfigListBox.Items[ItemIndex] := NewName;
+              ConfigListBox.Sorted := True;
+            end
+            else
+             ShowMessage('Error renaming file '+NewDirOldFile)
+        else
+          ShowMessage('Error renaming directory '+OldDirName);
+      end;
     end;
   end;
 end;
@@ -181,25 +188,26 @@ begin
     Item := ConfigListBox.Items[ItemIndex];
     CfgFile := PathData.GetVMConfigsPath+Item+'/'+Item+VMEXT;
     NewName := Item+' (Copy)';
-    InputQuery('New name','Enter name:', NewName);
-    NewDir := PathData.GetVMConfigsPath+NewName+'/';
-    NewFileName := NewDir+NewName+VMEXT;
-    OK := True;
-    if DirectoryExists(NewDir) then begin
-      ShowMessage(NewDir+' already exists');
-      OK := False;
-    end;
-    if FileExists(NewFileName) then begin
-      ShowMessage(NewName+' already exists');
-      OK := False;
-    end;
-    if OK then OK := CreateDir(NewDir);
-    if OK then begin
-      if CopyFile(CfgFile, NewFileName) then
-        ConfigListBox.Items.Add(NewName)
-      else begin
-        RemoveDir(NewDir);
-        ShowMessage('Error copying file "'+CfgFile+'".');
+    if InputQuery('New name','Enter name:', NewName) then begin
+      NewDir := PathData.GetVMConfigsPath+NewName+'/';
+      NewFileName := NewDir+NewName+VMEXT;
+      OK := True;
+      if DirectoryExists(NewDir) then begin
+        ShowMessage(NewDir+' already exists');
+        OK := False;
+      end;
+      if FileExists(NewFileName) then begin
+        ShowMessage(NewName+' already exists');
+        OK := False;
+      end;
+      if OK then OK := CreateDir(NewDir);
+      if OK then begin
+        if CopyFile(CfgFile, NewFileName) then
+          ConfigListBox.Items.Add(NewName)
+        else begin
+          RemoveDir(NewDir);
+          ShowMessage('Error copying file "'+CfgFile+'".');
+        end;
       end;
     end;
   end;
@@ -222,7 +230,7 @@ begin
     begin
       if not DeleteFile(CfgFile) then ShowMessage('Error deleting "'+CfgFile+'".')
         else ConfigListBox.Items.Delete(ItemIndex);
-      if not RemoveDir(Dir) then ShowMessage('Error deleting "'+Dir+'".')
+      if not DeleteDirectory(Dir, False) then ShowMessage('Error deleting "'+Dir+'".')
     end;
   end;
   if ConfigListBox.Items.Count = 0 then begin

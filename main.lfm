@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 279
+  Left = 277
   Height = 374
-  Top = 137
+  Top = 178
   Width = 330
   BorderIcons = []
   BorderStyle = bsDialog
@@ -18,7 +18,6 @@ object MainForm: TMainForm
     ItemHeight = 0
     Sorted = True
     TabOrder = 0
-    TopIndex = -1
   end
   object SpeedButtonLaunch: TSpeedButton
     Left = 269
