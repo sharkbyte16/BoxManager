@@ -8,11 +8,7 @@ uses
   Classes, SysUtils, Dialogs, StrUtils;
 
 const
-  APPDIR = '~/.boxmanager/';
-  VMDIR = APPDIR + 'VMs/';
   VMEXT = '.cfg';
-  CFGFILE = 'config.txt';
-
 
 type
   { TPathData }
@@ -31,15 +27,35 @@ type
   end;
 
 function GetConfig(ConfigFilename : string; SettingName : string) : string;
-procedure SaveConfig(ConfigFilename : string; PathData : TPathData);
+procedure SaveConfig(PathData : TPathData);
 
 implementation
+
+const
+  {$IFDEF MSWINDOWS}
+    HOMEDIR = '~/';
+  {$ENDIF}
+  {$IFDEF UNIX}
+    HOMEDIR = 'C:\';
+  {$ENDIF}
+  APPDIR_DEF = HOMEDIR + '.boxmanager/';
+  VMDIR_DEF = APPDIR_DEF + 'VMs/';
+  CFGFILE_DEF = APPDIR_DEF + 'BoxManager.cfg';
+
+var
+  APPDIR : string = APPDIR_DEF;
+  VMDIR : string  = VMDIR_DEF;
+  CFGFILE : string  = CFGFILE_DEF;
 
 constructor TPathData.Create;
 var OK, binpathOK, pathfileOK : boolean;
     binpath : string;
     F : Text;
+    OpenDialog : TOpenDialog;
 begin
+  APPDIR := GetAppConfigDir(False);
+  VMDIR := APPDIR + 'VMs/';
+  CFGFILE := APPDIR + 'BoxManager.cfg';
   SettingsDir := ExpandFileName(APPDIR);
   VMConfigsDir := ExpandFileName(VMDIR);
   // config file
@@ -50,25 +66,35 @@ begin
   pathfileOK := False;
   if OK then begin
     binpathOK := False;
-    if FileExists(SettingsDir+CFGFILE) then begin
-      binpath := GetConfig(SettingsDir+CFGFILE, 'executable');
+    if FileExists(CFGFILE) then begin
+      binpath := GetConfig(CFGFILE, 'executable');
       binpathOK := FileExists(binpath);
       pathfileOK := binpathOK;
     end;
     if not binpathOK then begin
-      binpath := FileSearch('86Box', '.:/bin/:/usr/bin:/usr/local/bin:') + '/86Box';
+      {$IFDEF MSWINDOWS}
+        binpath := FileSearch('86Box.exe', '.:C:\:C:\Program Files:C:\Program Files (x86):') + '\86Box';
+      {$ENDIF}
+      {$IFDEF UNIX}
+        binpath := FileSearch('86Box', '.:/bin/:/usr/bin:/usr/local/bin:') + '/86Box';
+      {$ENDIF}
       binpathOK := FileExists(binpath);
     end;
     if not binpathOK then begin
+      ShowMessage('Could not find the 86Box executable, please specify.');
       repeat
-        InputQuery('86Box path','Please specify the full path of the 86Box binary', binpath);
+        OpenDialog := TOpenDialog.Create(nil);
+        OpenDialog.Title := 'Please specify the full path of the 86Box binary';
+        OpenDialog.Options := [ofFileMustExist,ofEnableSizing,ofViewDetail];
+        OpenDialog.Execute;
+        binpath := OpenDialog.FileName;
         binpathOK := FileExists(binpath);
       until binpathOK;
     end;
     if not pathfileOK then begin
-      Assign(F, SettingsDir+CFGFILE);
+      Assign(F, CFGFILE);
       Rewrite(F);
-      Writeln(F, binpath);
+      Writeln(F, 'executable = '+binpath);
       Close(F);
     end;
   end;
@@ -79,8 +105,8 @@ begin
     if not OK then OK := CreateDir(VMConfigsDir);
     if not OK then ShowMessage('Failed to create directory '+VMConfigsDir);
   end;
-  FullScreen := LowerCase(GetConfig(SettingsDir+CFGFILE, 'fullscreen')) = 'true';
-  NoConfirm := LowerCase(GetConfig(SettingsDir+CFGFILE, 'noconfirm')) = 'true';
+  FullScreen := LowerCase(GetConfig(CFGFILE, 'fullscreen')) = 'true';
+  NoConfirm := LowerCase(GetConfig(CFGFILE, 'noconfirm')) = 'true';
 end;
 
 function TPathData.GetSettingsPath: string;
@@ -122,15 +148,13 @@ begin
   if bool then Result := 'True' else Result := 'False';
 end;
 
-procedure SaveConfig(ConfigFilename : string; PathData : TPathData);
+procedure SaveConfig(PathData : TPathData);
 var
   F : Text;
-  S, Value : string;
 begin
-  Assign(F, ConfigFilename);
+  Assign(F, CFGFILE);
   Rewrite(F);
   Writeln(F, 'executable = '+PathData.GetBinaryPath);
-
   Writeln(F, 'fullscreen = '+Bool2Str(PathData.FullScreen));
   Writeln(F, 'noconfirm = '+Bool2Str(PathData.NoConfirm));
   Close(F);

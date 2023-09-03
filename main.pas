@@ -282,7 +282,7 @@ begin
   OptionsForm.ShowModal;
   PathData.FullScreen := OptionsForm.CheckBoxFullScreen.Checked;
   PathData.NoConfirm := OptionsForm.CheckBoxNoConfirm.Checked;
-  SaveConfig(PathData.GetSettingsPath+CFGFILE, PathData);
+  SaveConfig(PathData);
 end;
 
 
