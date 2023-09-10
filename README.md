@@ -20,8 +20,8 @@ Features
 
 Code
 ----
-BoxManager is written in Lazarus (2.2.6) with FreePascal (3.2.2). Tested in Linux Mint LMDE 5 and Windows 10 22H2.
-To build and run, just open the lpr file in Lazarus and hit run :)
+BoxManager is written in Lazarus (2.2.6) and tested in Linux Mint LMDE 5 and Windows 10 22H2.
+To build and run, just open the .lpr file in Lazarus and hit run :)
 
   
 
