@@ -86,7 +86,7 @@ begin
     while Result = 0 do
     begin
       if ((SearchRec.Name <> '.') and (SearchRec.Name <> '..')) then begin
-        if FileExists(PathData.GetVMConfigsPath+SearchRec.Name+'/'+ExtractFilenameOnlyWithoutExt(SearchRec.Name)+'.cfg') then
+        if FileExists(PathData.GetVMConfigsPath+SearchRec.Name+SLASH+ExtractFilenameOnlyWithoutExt(SearchRec.Name)+'.cfg') then
           ConfigListBox.Items.Add(SearchRec.Name);
       end;
       Result := FindNext(SearchRec);
@@ -113,7 +113,7 @@ begin
   ListWasEmpty := (ConfigListBox.Items.Count = 0);
   NewName := '';
   if InputQuery('New config','Enter name:', NewName) then begin;
-    NewDir := PathData.GetVMConfigsPath+NewName+'/';
+    NewDir := PathData.GetVMConfigsPath+NewName+SLASH;
     NewFileName := NewDir+NewName+VMEXT;
     OK := True;
     if DirectoryExists(NewDir) then begin
@@ -151,10 +151,10 @@ begin
   ItemIndex := ConfigListBox.ItemIndex;
   if ItemIndex >= 0 then begin
     Item := ConfigListBox.Items[ItemIndex];
-    OldDirName := PathData.GetVMConfigsPath+Item+'/';
+    OldDirName := PathData.GetVMConfigsPath+Item+SLASH;
     NewName := Item;
     if InputQuery('New name','Enter name:', NewName) then begin ;
-      NewDirName := PathData.GetVMConfigsPath+NewName+'/';
+      NewDirName := PathData.GetVMConfigsPath+NewName+SLASH;
       NewDirOldFile :=  NewDirName+Item+VMEXT;
       NewFileName := NewDirName+NewName+VMEXT;
       if FileExists(NewFileName) then begin
@@ -166,6 +166,8 @@ begin
               ConfigListBox.Sorted := False;
               ConfigListBox.Items[ItemIndex] := NewName;
               ConfigListBox.Sorted := True;
+              // all OK --> update all old path strings to new path strings
+              ModifyConfigFilePath(NewFileName, OldDirName, NewDirName);
             end
             else
              ShowMessage('Error renaming file '+NewDirOldFile)
@@ -179,35 +181,34 @@ end;
 
 procedure TMainForm.SpeedButtonCopyClick(Sender: TObject);
 var
-  Item, CfgFile, NewName, NewDir,NewFileName : string;
+  Item, CfgFile, OldDir, NewName, NewDir, NewFileName : string;
   ItemIndex : integer;
   OK : boolean;
 begin
   ItemIndex := ConfigListBox.ItemIndex;
   if ItemIndex >= 0 then begin
     Item := ConfigListBox.Items[ItemIndex];
-    CfgFile := PathData.GetVMConfigsPath+Item+'/'+Item+VMEXT;
+    OldDir := PathData.GetVMConfigsPath+Item+SLASH;
+    CfgFile := PathData.GetVMConfigsPath+Item+SLASH+Item+VMEXT;
     NewName := Item+' (Copy)';
     if InputQuery('New name','Enter name:', NewName) then begin
-      NewDir := PathData.GetVMConfigsPath+NewName+'/';
+      NewDir := PathData.GetVMConfigsPath+NewName+SLASH;
       NewFileName := NewDir+NewName+VMEXT;
       OK := True;
       if DirectoryExists(NewDir) then begin
         ShowMessage(NewDir+' already exists');
         OK := False;
       end;
-      if FileExists(NewFileName) then begin
-        ShowMessage(NewName+' already exists');
-        OK := False;
-      end;
-      if OK then OK := CreateDir(NewDir);
+      if not CopyDirTree(OldDir, NewDir) then OK := False;
+      if not RenameFile(NewDir+Item+VMEXT, NewFileName) then OK := False;
       if OK then begin
-        if CopyFile(CfgFile, NewFileName) then
-          ConfigListBox.Items.Add(NewName)
-        else begin
-          RemoveDir(NewDir);
-          ShowMessage('Error copying file "'+CfgFile+'".');
-        end;
+        ConfigListBox.Items.Add(NewName);
+        // all OK --> update all old path strings to new path strings
+        ModifyConfigFilePath(NewFileName, OldDir, NewDir);
+      end
+      else begin
+        RemoveDir(NewDir);
+        ShowMessage('Error copying file "'+CfgFile+'".');
       end;
     end;
   end;
@@ -222,7 +223,7 @@ begin
   ItemIndex := ConfigListBox.ItemIndex;
   if ItemIndex >= 0 then begin
     Item := ConfigListBox.Items[ItemIndex];
-    Dir := PathData.GetVMConfigsPath+Item+'/';
+    Dir := PathData.GetVMConfigsPath+Item+SLASH;
     CfgFile := Dir+Item+VMEXT;
     if Application.MessageBox(Pchar('Do you want to delete "'+Item+'"?'),
                               Pchar('Delete confirmation'),
@@ -251,7 +252,7 @@ begin
   ItemIndex := ConfigListBox.ItemIndex;
   if ItemIndex >= 0 then begin
     Item := ConfigListBox.Items[ItemIndex];
-    CfgFile := PathData.GetVMConfigsPath+Item+'/'+Item+VMEXT;
+    CfgFile := PathData.GetVMConfigsPath+Item+SLASH+Item+VMEXT;
     if FileExists(CfgFile) then begin
       if PathData.FullScreen then FullScr := '--fullscreen ' else FullScr := '';
       if PathData.FullScreen then NoConfrm := '--noconfirm ' else NoConfrm := '';
@@ -272,7 +273,7 @@ begin
   ItemIndex := ConfigListBox.ItemIndex;
   if ItemIndex >= 0 then begin
     Item := ConfigListBox.Items[ItemIndex];
-    CfgFile := PathData.GetVMConfigsPath+Item+'/'+Item+VMEXT;
+    CfgFile := PathData.GetVMConfigsPath+Item+SLASH+Item+VMEXT;
     if FileExists(CfgFile) then begin
       CmdLine := '--settings "'+CfgFile+'"';
       ExecuteProcess(UTF8ToSys(PathData.GetBinaryPath), UTF8ToSys(CmdLine));

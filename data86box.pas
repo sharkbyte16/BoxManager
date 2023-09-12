@@ -9,6 +9,12 @@ uses
 
 const
   VMEXT = '.cfg';
+  {$IFDEF MSWINDOWS}
+    SLASH = '\';
+  {$ENDIF}
+  {$IFDEF UNIX}
+    SLASH = '/';
+  {$ENDIF}
 
 type
   { TPathData }
@@ -28,15 +34,16 @@ type
 
 function GetConfig(ConfigFilename : string; SettingName : string) : string;
 procedure SaveConfig(PathData : TPathData);
+procedure ModifyConfigFilePath(const configFile, oldFilePath, newFilePath: string);
 
 implementation
 
 const
   {$IFDEF MSWINDOWS}
-    HOMEDIR = '~/';
+    HOMEDIR = 'C:\';
   {$ENDIF}
   {$IFDEF UNIX}
-    HOMEDIR = 'C:\';
+    HOMEDIR = '~/';
   {$ENDIF}
   APPDIR_DEF = HOMEDIR + '.boxmanager/';
   VMDIR_DEF = APPDIR_DEF + 'VMs/';
@@ -158,6 +165,36 @@ begin
   Writeln(F, 'fullscreen = '+Bool2Str(PathData.FullScreen));
   Writeln(F, 'noconfirm = '+Bool2Str(PathData.NoConfirm));
   Close(F);
+end;
+
+procedure ModifyConfigFilePath(const configFile, oldFilePath, newFilePath: string);
+var
+  FileLines: TStringList;
+  i: integer;
+  Line, S1, S2, FileName: string;
+  Delims : TSysCharSet;
+begin
+  Delims := ['='];
+  FileLines := TStringList.Create;
+  try
+    FileLines.LoadFromFile(configFile);
+    for i := 0 to FileLines.Count - 1 do
+    begin
+      Line := FileLines[i];
+	  S1 := Trim(ExtractWord(1, Line, Delims));
+	  S2 := Trim(ExtractWord(2, Line, Delims));
+      if (Pos(oldFilePath, S2) <> 0) then
+      begin
+        // Replace the old path with the new path
+		FileName := ExtractFileName(S2);
+        Line := S1 + ' = ' + newFilePath + FileName;
+        FileLines[i] := Line;
+      end;
+    end;
+    FileLines.SaveToFile(configFile);
+  finally
+    FileLines.Free;
+  end;
 end;
 
 end.

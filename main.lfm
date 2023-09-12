@@ -18,6 +18,7 @@ object MainForm: TMainForm
     ItemHeight = 0
     Sorted = True
     TabOrder = 0
+    TopIndex = -1
   end
   object SpeedButtonLaunch: TSpeedButton
     Left = 269
