@@ -16,6 +16,7 @@ object MainForm: TMainForm
     Top = 10
     Width = 250
     ItemHeight = 0
+    ScrollWidth = 500
     Sorted = True
     TabOrder = 0
     TopIndex = -1

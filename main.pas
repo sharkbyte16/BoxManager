@@ -34,7 +34,6 @@ type
   private
     PathData : TPathData;
     procedure UpdateConfigurationList;
-    function ExtractFilenameOnlyWithoutExt(AFileName: string): string;
   public
     constructor Create(AOwner : TComponent); override;
     destructor Destroy; override;
@@ -69,12 +68,6 @@ begin
 end;
 
 
-function TMainForm.ExtractFilenameOnlyWithoutExt(AFileName: string): string;
-begin
-  Result := ChangeFileExt(ExtractFileName(AFileName), '');
-end;
-
-
 procedure TMainForm.UpdateConfigurationList;
 var
   SearchRec: TSearchRec;
@@ -86,7 +79,7 @@ begin
     while Result = 0 do
     begin
       if ((SearchRec.Name <> '.') and (SearchRec.Name <> '..')) then begin
-        if FileExists(PathData.GetVMConfigsPath+SearchRec.Name+SLASH+ExtractFilenameOnlyWithoutExt(SearchRec.Name)+'.cfg') then
+        if FileExists(PathData.GetVMConfigsPath+SearchRec.Name+SLASH+SearchRec.Name+'.cfg') then
           ConfigListBox.Items.Add(SearchRec.Name);
       end;
       Result := FindNext(SearchRec);
