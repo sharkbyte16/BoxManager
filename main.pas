@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, LCLType, StdCtrls, ExtCtrls,
-  Buttons, FileUtil, LazUTF8, Data86box, Options;
+  Buttons, Menus, FileUtil, LazUTF8, Data86box, Options;
 
 type
 
@@ -14,6 +14,8 @@ type
 
   TMainForm = class(TForm)
     ConfigListBox: TListBox;
+    MenuItemFitWindow: TMenuItem;
+    PopupMenu1: TPopupMenu;
     SpeedButtonAdd: TSpeedButton;
     SpeedButtonRename: TSpeedButton;
     SpeedButtonCopy: TSpeedButton;
@@ -23,6 +25,8 @@ type
     SpeedButtonSettings: TSpeedButton;
     SpeedButtonOptions: TSpeedButton;
     procedure FormCreate(Sender: TObject);
+    procedure FormResize(Sender: TObject);
+    procedure MenuItemFitWindowClick(Sender: TObject);
     procedure SpeedButtonAddClick(Sender: TObject);
     procedure SpeedButtonCopyClick(Sender: TObject);
     procedure SpeedButtonDeleteClick(Sender: TObject);
@@ -34,6 +38,7 @@ type
   private
     PathData : TPathData;
     procedure UpdateConfigurationList;
+    function ConfigurationListItemWidth : integer;
   public
     constructor Create(AOwner : TComponent); override;
     destructor Destroy; override;
@@ -67,6 +72,10 @@ begin
   UpdateConfigurationList;
 end;
 
+procedure TMainForm.FormResize(Sender: TObject);
+begin
+  ConfigListBox.ScrollWidth := ConfigurationListItemWidth;
+end;
 
 procedure TMainForm.UpdateConfigurationList;
 var
@@ -95,8 +104,28 @@ begin
     SpeedButtonSettings.Enabled := True;
     SpeedButtonLaunch.Enabled := True;
   end;
+  ConfigListBox.ScrollWidth := ConfigurationListItemWidth;
 end;
 
+function TMainForm.ConfigurationListItemWidth : integer;
+var
+  MaxWidth, i, TextWidth: Integer;
+begin
+  MaxWidth := 0;
+  for i := 0 to ConfigListBox.Items.Count - 1 do
+  begin
+    TextWidth := ConfigListBox.Canvas.TextWidth(ConfigListBox.Items[i]);
+    if TextWidth > MaxWidth then
+      MaxWidth := TextWidth;
+  end;
+  ConfigurationListItemWidth := MaxWidth;
+end;
+
+procedure TMainForm.MenuItemFitWindowClick(Sender: TObject);
+begin
+  Width := ConfigurationListItemWidth + 92;
+  ConfigListBox.ScrollWidth := ConfigListBox.Width;
+end;
 
 procedure TMainForm.SpeedButtonAddClick(Sender: TObject);
 var
@@ -132,6 +161,7 @@ begin
       SpeedButtonSettings.Enabled := True;
       SpeedButtonLaunch.Enabled := True;
     end;
+    ConfigListBox.ScrollWidth := ConfigurationListItemWidth;
   end;
 end;
 
@@ -169,6 +199,7 @@ begin
       end;
     end;
   end;
+  ConfigListBox.ScrollWidth := ConfigurationListItemWidth;
 end;
 
 
@@ -205,6 +236,7 @@ begin
       end;
     end;
   end;
+  ConfigListBox.ScrollWidth := ConfigurationListItemWidth;
 end;
 
 
@@ -234,6 +266,7 @@ begin
     SpeedButtonSettings.Enabled := False;
     SpeedButtonLaunch.Enabled := False;
   end;
+  ConfigListBox.ScrollWidth := ConfigurationListItemWidth;
 end;
 
 

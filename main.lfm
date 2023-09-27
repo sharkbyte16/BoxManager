@@ -1,32 +1,38 @@
 object MainForm: TMainForm
-  Left = 277
+  Left = 278
   Height = 374
   Top = 178
   Width = 330
   BorderIcons = []
-  BorderStyle = bsDialog
   Caption = '86Box Configuration Manager'
   ClientHeight = 374
   ClientWidth = 330
   OnCreate = FormCreate
+  OnResize = FormResize
   LCLVersion = '2.2.6.0'
   object ConfigListBox: TListBox
+    AnchorSideRight.Control = SpeedButtonLaunch
     Left = 10
     Height = 300
     Top = 10
     Width = 250
+    Align = alCustom
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Right = 9
     ItemHeight = 0
-    ScrollWidth = 500
+    PopupMenu = PopupMenu1
     Sorted = True
     TabOrder = 0
     TopIndex = -1
   end
   object SpeedButtonLaunch: TSpeedButton
+    AnchorSideRight.Side = asrBottom
     Left = 269
     Height = 44
     Hint = 'Load'
     Top = 10
     Width = 52
+    Anchors = [akTop, akRight]
     Enabled = False
     Glyph.Data = {
       36100000424D3610000000000000360000002800000020000000200000000100
@@ -166,11 +172,13 @@ object MainForm: TMainForm
     ParentShowHint = False
   end
   object SpeedButtonSettings: TSpeedButton
+    AnchorSideRight.Side = asrBottom
     Left = 269
     Height = 44
     Hint = 'Configure'
     Top = 64
     Width = 52
+    Anchors = [akTop, akRight]
     Enabled = False
     Glyph.Data = {
       36100000424D3610000000000000360000002800000020000000200000000100
@@ -310,11 +318,14 @@ object MainForm: TMainForm
     ParentShowHint = False
   end
   object SpeedButtonOptions: TSpeedButton
+    AnchorSideBottom.Control = SpeedButtonQuit
     Left = 269
     Height = 44
     Hint = 'Configure Host'
     Top = 266
     Width = 52
+    Anchors = [akRight, akBottom]
+    BorderSpacing.Bottom = 10
     Glyph.Data = {
       36100000424D3610000000000000360000002800000020000000200000000100
       2000000000000010000064000000640000000000000000000000FFFFFF00FFFF
@@ -453,10 +464,12 @@ object MainForm: TMainForm
     ParentShowHint = False
   end
   object SpeedButtonQuit: TSpeedButton
+    AnchorSideBottom.Side = asrBottom
     Left = 269
     Height = 44
     Top = 320
     Width = 52
+    Anchors = [akRight, akBottom]
     Glyph.Data = {
       36100000424D3610000000000000360000002800000020000000200000000100
       2000000000000010000064000000640000000000000000000000000000000000
@@ -593,11 +606,13 @@ object MainForm: TMainForm
     ShowCaption = False
   end
   object SpeedButtonAdd: TSpeedButton
+    AnchorSideBottom.Side = asrBottom
     Left = 9
     Height = 44
     Hint = 'New'
     Top = 320
     Width = 52
+    Anchors = [akLeft, akBottom]
     Glyph.Data = {
       36100000424D3610000000000000360000002800000020000000200000000100
       2000000000000010000064000000640000000000000000000000000000000000
@@ -736,11 +751,15 @@ object MainForm: TMainForm
     ParentShowHint = False
   end
   object SpeedButtonRename: TSpeedButton
+    AnchorSideLeft.Control = SpeedButtonAdd
+    AnchorSideBottom.Side = asrBottom
     Left = 69
     Height = 44
     Hint = 'Rename'
     Top = 320
     Width = 52
+    Anchors = [akLeft, akBottom]
+    BorderSpacing.Left = 60
     Enabled = False
     Glyph.Data = {
       36100000424D3610000000000000360000002800000020000000200000000100
@@ -880,11 +899,15 @@ object MainForm: TMainForm
     ParentShowHint = False
   end
   object SpeedButtonCopy: TSpeedButton
+    AnchorSideLeft.Control = SpeedButtonRename
+    AnchorSideBottom.Side = asrBottom
     Left = 129
     Height = 44
     Hint = 'Copy'
     Top = 320
     Width = 52
+    Anchors = [akLeft, akBottom]
+    BorderSpacing.Left = 60
     Enabled = False
     Glyph.Data = {
       36100000424D3610000000000000360000002800000020000000200000000100
@@ -1024,11 +1047,15 @@ object MainForm: TMainForm
     ParentShowHint = False
   end
   object SpeedButtonDelete: TSpeedButton
+    AnchorSideLeft.Control = SpeedButtonCopy
+    AnchorSideBottom.Side = asrBottom
     Left = 189
     Height = 44
     Hint = 'Delete'
     Top = 320
     Width = 52
+    Anchors = [akLeft, akBottom]
+    BorderSpacing.Left = 60
     Enabled = False
     Glyph.Data = {
       36100000424D3610000000000000360000002800000020000000200000000100
@@ -1166,5 +1193,13 @@ object MainForm: TMainForm
     ShowCaption = False
     ShowHint = True
     ParentShowHint = False
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 272
+    Top = 120
+    object MenuItemFitWindow: TMenuItem
+      Caption = 'Fit window to list'
+      OnClick = MenuItemFitWindowClick
+    end
   end
 end
