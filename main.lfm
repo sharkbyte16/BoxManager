@@ -3,7 +3,7 @@ object MainForm: TMainForm
   Height = 374
   Top = 178
   Width = 330
-  BorderIcons = []
+  BorderIcons = [biMinimize, biMaximize]
   Caption = '86Box Configuration Manager'
   ClientHeight = 374
   ClientWidth = 330
