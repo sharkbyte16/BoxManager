@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, LCLType, StdCtrls, ExtCtrls,
-  Buttons, Menus, FileUtil, LazUTF8, Data86box, Options;
+  Buttons, Menus, FileUtil, LazUTF8, Data86box, Options,
+  Process;
 
 type
 
@@ -129,8 +130,9 @@ end;
 
 procedure TMainForm.SpeedButtonAddClick(Sender: TObject);
 var
-  NewName, NewDir, NewFileName, CmdLine : string;
+  NewName, NewDir, NewFileName : string;
   ListWasEmpty, OK : boolean;
+  proc: TProcess;
 begin
   ListWasEmpty := (ConfigListBox.Items.Count = 0);
   NewName := '';
@@ -148,8 +150,18 @@ begin
     end;
     if OK then OK := CreateDir(NewDir);
     if OK then begin
-      CmdLine := '--settings "'+NewFileName+'"';
-      ExecuteProcess(UTF8ToSys(PathData.GetBinaryPath), UTF8ToSys(CmdLine));
+      proc := TProcess.Create(nil);
+      proc.Executable := PathData.GetBinaryPath;
+      proc.Parameters.Add('--settings');
+      proc.Parameters.Add(NewFileName);
+      proc.Options := proc.Options - [poWaitOnExit];
+      proc.Execute;
+      while proc.Running do //check if process is running
+      begin
+        Application.ProcessMessages;
+        sleep(100);
+      end;
+      proc.Free;
     end;
     if FileExists(NewFileName) then ConfigListBox.Items.Add(NewName)
       else RemoveDir(NewDir);
@@ -272,18 +284,23 @@ end;
 
 procedure TMainForm.SpeedButtonLaunchClick(Sender: TObject);
 var
-  Item, CfgFile, CmdLine, FullScr, NoConfrm : string;
+  Item, CfgFile : string;
   ItemIndex : integer;
+  proc: TProcess;
 begin
   ItemIndex := ConfigListBox.ItemIndex;
   if ItemIndex >= 0 then begin
     Item := ConfigListBox.Items[ItemIndex];
     CfgFile := PathData.GetVMConfigsPath+Item+SLASH+Item+VMEXT;
     if FileExists(CfgFile) then begin
-      if PathData.FullScreen then FullScr := '--fullscreen ' else FullScr := '';
-      if PathData.FullScreen then NoConfrm := '--noconfirm ' else NoConfrm := '';
-      CmdLine := FullScr+NoConfrm+'"'+CfgFile+'"';
-      ExecuteProcess(UTF8ToSys(PathData.GetBinaryPath), UTF8ToSys(CmdLine));
+      proc := TProcess.Create(nil);
+      proc.Executable := PathData.GetBinaryPath;
+      if PathData.FullScreen then proc.Parameters.Add('--fullscreen');
+      if PathData.NoConfirm then  proc.Parameters.Add('--noconfirm');
+      proc.Parameters.Add(CfgFile);
+      proc.Options := proc.Options - [poWaitOnExit];
+      proc.Execute;
+      proc.Free;
     end
     else
       ShowMessage(CfgFile+' not found.');
@@ -293,16 +310,22 @@ end;
 
 procedure TMainForm.SpeedButtonSettingsClick(Sender: TObject);
 var
-  Item, CfgFile, CmdLine : string;
+  Item, CfgFile : string;
   ItemIndex : integer;
+  proc: TProcess;
 begin
   ItemIndex := ConfigListBox.ItemIndex;
   if ItemIndex >= 0 then begin
     Item := ConfigListBox.Items[ItemIndex];
     CfgFile := PathData.GetVMConfigsPath+Item+SLASH+Item+VMEXT;
     if FileExists(CfgFile) then begin
-      CmdLine := '--settings "'+CfgFile+'"';
-      ExecuteProcess(UTF8ToSys(PathData.GetBinaryPath), UTF8ToSys(CmdLine));
+      proc := TProcess.Create(nil);
+      proc.Executable := PathData.GetBinaryPath;
+      proc.Parameters.Add('--settings');
+      proc.Parameters.Add(CfgFile);
+      proc.Options := proc.Options - [poWaitOnExit];
+      proc.Execute;
+      proc.Free;
     end
     else
       ShowMessage(CfgFile+' not found.');
