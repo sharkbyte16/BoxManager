@@ -1,17 +1,17 @@
 object OptionsForm: TOptionsForm
-  Left = 1564
+  Left = 1151
   Height = 80
-  Top = 433
+  Top = 589
   Width = 351
   Caption = '86Box configuration'
   ClientHeight = 80
   ClientWidth = 351
-  LCLVersion = '2.2.6.0'
+  LCLVersion = '3.2.0.0'
   object CheckBoxFullScreen: TCheckBox
     Left = 16
     Height = 23
     Top = 8
-    Width = 237
+    Width = 234
     Caption = 'fullscreen:  start in fullscreen mode'
     TabOrder = 0
   end

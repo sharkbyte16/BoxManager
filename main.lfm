@@ -9,7 +9,7 @@ object MainForm: TMainForm
   ClientWidth = 330
   OnCreate = FormCreate
   OnResize = FormResize
-  LCLVersion = '3.0.0.3'
+  LCLVersion = '3.2.0.0'
   object ConfigListBox: TListBox
     AnchorSideRight.Control = SpeedButtonLaunch
     Left = 10

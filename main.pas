@@ -180,14 +180,15 @@ end;
 
 procedure TMainForm.SpeedButtonRenameClick(Sender: TObject);
 var
-  Item, OldDirName, NewDirOldFile, NewName, NewDirName, NewFileName : string;
+  Item, OldName, OldDirName, NewDirOldFile, NewName, NewDirName, NewFileName : string;
   ItemIndex : integer;
 begin
   ItemIndex := ConfigListBox.ItemIndex;
   if ItemIndex >= 0 then begin
     Item := ConfigListBox.Items[ItemIndex];
     OldDirName := PathData.GetVMConfigsPath+Item+SLASH;
-    NewName := Item;
+    OldName := Item;
+    NewName := OldName;
     if InputQuery('New name','Enter name:', NewName) then begin ;
       NewDirName := PathData.GetVMConfigsPath+NewName+SLASH;
       NewDirOldFile :=  NewDirName+Item+VMEXT;
@@ -202,7 +203,7 @@ begin
               ConfigListBox.Items[ItemIndex] := NewName;
               ConfigListBox.Sorted := True;
               // all OK --> update all old path strings to new path strings
-              ModifyConfigFilePath(NewFileName, OldDirName, NewDirName);
+              ModifyConfigFilePath(NewFileName, OldName, NewName);
             end
             else
              ShowMessage('Error renaming file '+NewDirOldFile)
@@ -217,7 +218,7 @@ end;
 
 procedure TMainForm.SpeedButtonCopyClick(Sender: TObject);
 var
-  Item, CfgFile, OldDir, NewName, NewDir, NewFileName : string;
+  Item, CfgFile, OldName, OldDir, NewName, NewDir, NewFileName : string;
   ItemIndex : integer;
   OK : boolean;
 begin
@@ -226,6 +227,7 @@ begin
     Item := ConfigListBox.Items[ItemIndex];
     OldDir := PathData.GetVMConfigsPath+Item+SLASH;
     CfgFile := PathData.GetVMConfigsPath+Item+SLASH+Item+VMEXT;
+    OldName := Item;
     NewName := Item+' (Copy)';
     if InputQuery('New name','Enter name:', NewName) then begin
       NewDir := PathData.GetVMConfigsPath+NewName+SLASH;
@@ -240,7 +242,7 @@ begin
       if OK then begin
         ConfigListBox.Items.Add(NewName);
         // all OK --> update all old path strings to new path strings
-        ModifyConfigFilePath(NewFileName, OldDir, NewDir);
+        ModifyConfigFilePath(NewFileName, OldName, NewName);
       end
       else begin
         RemoveDir(NewDir);

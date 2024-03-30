@@ -34,7 +34,7 @@ type
 
 function GetConfig(ConfigFilename : string; SettingName : string) : string;
 procedure SaveConfig(PathData : TPathData);
-procedure ModifyConfigFilePath(const configFile, oldFilePath, newFilePath: string);
+procedure ModifyConfigFilePath(const configFile, oldVMname, newVMname: string);
 
 implementation
 
@@ -167,30 +167,17 @@ begin
   Close(F);
 end;
 
-procedure ModifyConfigFilePath(const configFile, oldFilePath, newFilePath: string);
+procedure ModifyConfigFilePath(const configFile, oldVMname, newVMname: string);
 var
   FileLines: TStringList;
-  i: integer;
-  Line, S1, S2, FileName: string;
-  Delims : TSysCharSet;
+  oldVMpath, newVMpath : string;
 begin
-  Delims := ['='];
   FileLines := TStringList.Create;
+  oldVMpath := '/'+oldVMname+'/';
+  newVMpath := '/'+newVMname+'/';
   try
     FileLines.LoadFromFile(configFile);
-    for i := 0 to FileLines.Count - 1 do
-    begin
-      Line := FileLines[i];
-	  S1 := Trim(ExtractWord(1, Line, Delims));
-	  S2 := Trim(ExtractWord(2, Line, Delims));
-      if (Pos(oldFilePath, S2) <> 0) then
-      begin
-        // Replace the old path with the new path
-		FileName := ExtractFileName(S2);
-        Line := S1 + ' = ' + newFilePath + FileName;
-        FileLines[i] := Line;
-      end;
-    end;
+    FileLines.Text := StringReplace(FileLines.Text, oldVMpath, newVMpath, [rfReplaceAll]);
     FileLines.SaveToFile(configFile);
   finally
     FileLines.Free;
