@@ -20,8 +20,8 @@ Features
 
 Code
 ----
-BoxManager is written in Lazarus (3.0) on Ubuntu 21.10, and at intervals tested on Windows 10 22H2.
-To build and run, just open the .lpr file in Lazarus and hit run :)
+BoxManager is written in Lazarus (3.2) on Ubuntu 21.10, and at intervals tested on Windows 10 22H2.
+To build and run, just open the .lpr file in Lazarus and hit run :). The Win32 and Win64 foulder contain prebuild windows binaries.
 
   
 
