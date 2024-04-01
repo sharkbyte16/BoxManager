@@ -2,14 +2,14 @@
 <CONFIG>
   <ProjectSession>
     <Version Value="12"/>
-    <ManyBuildModesSelection Value="Linux64,Win64"/>
-    <BuildModes Active="Linux64"/>
+    <ManyBuildModesSelection Value="Linux64,Win64,Win32"/>
+    <BuildModes Active="Win32"/>
     <Units>
       <Unit>
         <Filename Value="BoxManager.lpr"/>
         <IsPartOfProject Value="True"/>
-        <CursorPos X="20" Y="3"/>
-        <UsageCount Value="63"/>
+        <CursorPos Y="25"/>
+        <UsageCount Value="66"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -19,21 +19,21 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Main"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <TopLine Value="215"/>
         <CursorPos X="59" Y="245"/>
-        <UsageCount Value="63"/>
+        <UsageCount Value="66"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
         <Filename Value="data86box.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="Data86box"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <TopLine Value="25"/>
         <CursorPos X="71" Y="37"/>
-        <UsageCount Value="62"/>
+        <UsageCount Value="65"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -43,9 +43,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Options"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="4"/>
         <CursorPos X="13"/>
-        <UsageCount Value="40"/>
+        <UsageCount Value="43"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -70,16 +70,23 @@
         <CursorPos Y="240"/>
         <UsageCount Value="10"/>
       </Unit>
+      <Unit>
+        <Filename Value="/usr/share/lazarus/3.2.0/lcl/interfaces/fpgui/fpguicrosshelpers.pas"/>
+        <EditorIndex Value="3"/>
+        <CursorPos X="5" Y="10"/>
+        <UsageCount Value="11"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="/usr/share/lazarus/3.2.0/lcl/interfaces/win32/win32int.pp"/>
+        <UnitName Value="Win32Int"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="9"/>
+        <CursorPos X="3" Y="32"/>
+        <UsageCount Value="10"/>
+      </Unit>
     </Units>
-    <JumpHistory HistoryIndex="28">
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="76" Column="3" TopLine="58"/>
-      </Position>
-      <Position>
-        <Filename Value="main.pas"/>
-        <Caret Line="80" TopLine="58"/>
-      </Position>
+    <JumpHistory HistoryIndex="29">
       <Position>
         <Filename Value="main.pas"/>
         <Caret Line="84" Column="12" TopLine="59"/>
@@ -187,6 +194,18 @@
       <Position>
         <Filename Value="main.pas"/>
         <Caret Line="245" Column="59" TopLine="215"/>
+      </Position>
+      <Position>
+        <Filename Value="data86box.pas"/>
+        <Caret Line="37" Column="71" TopLine="25"/>
+      </Position>
+      <Position>
+        <Filename Value="/usr/share/lazarus/3.2.0/lcl/interfaces/fpgui/fpguicrosshelpers.pas"/>
+        <Caret Line="10" Column="5"/>
+      </Position>
+      <Position>
+        <Filename Value="BoxManager.lpr"/>
+        <Caret Line="25"/>
       </Position>
     </JumpHistory>
     <RunParams>
