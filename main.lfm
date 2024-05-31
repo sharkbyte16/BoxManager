@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 1154
+  Left = 1267
   Height = 374
-  Top = 173
+  Top = 137
   Width = 330
   BorderIcons = [biMinimize, biMaximize]
   Caption = '86Box Configuration Manager'
