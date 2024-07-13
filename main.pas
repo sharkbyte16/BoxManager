@@ -312,7 +312,7 @@ end;
 
 procedure TMainForm.SpeedButtonSettingsClick(Sender: TObject);
 var
-  Item, CfgFile : string;
+  Item, CfgFile, TimeStamp, BackupDir, BackupCfgFile : string;
   ItemIndex : integer;
   proc: TProcess;
 begin
@@ -321,13 +321,19 @@ begin
     Item := ConfigListBox.Items[ItemIndex];
     CfgFile := PathData.GetVMConfigsPath+Item+SLASH+Item+VMEXT;
     if FileExists(CfgFile) then begin
-      proc := TProcess.Create(nil);
-      proc.Executable := PathData.GetBinaryPath;
-      proc.Parameters.Add('--settings');
-      proc.Parameters.Add(CfgFile);
-      proc.Options := proc.Options - [poWaitOnExit];
-      proc.Execute;
-      proc.Free;
+      DateTimeToString(TimeStamp,'yyyymmdd_hhmmss',Now);
+      BackupDir := PathData.GetVMConfigsPath+Item+SLASH+'bak';
+      if not DirectoryExists(BackupDir) then CreateDir(BackupDir);
+      BackupCfgFile := BackupDir+SLASH+Item+VMEXT+'.'+TimeStamp;
+      if CopyFile(CfgFile, BackupCfgFile) then begin
+        proc := TProcess.Create(nil);
+        proc.Executable := PathData.GetBinaryPath;
+        proc.Parameters.Add('--settings');
+        proc.Parameters.Add(CfgFile);
+        proc.Options := proc.Options - [poWaitOnExit];
+        proc.Execute;
+        proc.Free;
+      end;
     end
     else
       ShowMessage(CfgFile+' not found.');
