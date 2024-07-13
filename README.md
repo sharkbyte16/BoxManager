@@ -20,7 +20,7 @@ Features
 
 Code
 ----
-BoxManager is written in Lazarus (3.4) on Debian 12. To build and run, just open the .lpr file in Lazarus and hit run :). The bin folder contain prebuild binaries for Debian 12 and Windows. The Windows binary is for compilation check only. Should run on Windows 10, however, not tested regularly.
+BoxManager is written in Lazarus 3.4 on Linux. To build and run, just open the .lpr file in Lazarus and hit run :). The bin folder contain prebuild binaries for Debian 12 and Windows. The Windows binary is for compilation check only. Should run on Windows 10, however, not tested regularly.
 
   
 
