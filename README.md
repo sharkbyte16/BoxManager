@@ -1,6 +1,6 @@
 What is BoxManager?
 ===================
-BoxManager is a system configuration manager for the 86Box PC emulator on Linux (and Windows). It implements a clone of the PCem interface for 86Box.
+BoxManager is a system configuration manager for the 86Box PC emulator on Linux. It implements a clone of the PCem interface for 86Box.
 
 ![alt text](https://github.com/sharkbyte16/BoxManager/blob/main/images/Screenshot%20BoxManager.png?raw=true)
 
@@ -12,7 +12,7 @@ The slightly longer answer: PCem is great emulator for running retro virtual PCs
 Features
 --------
 - Main functions: Adding, renaming, copying, editing and running system configurations in 86Box.
-- Each  configuration is stored in its own folder: ~/.config/BoxManager/VM on Linux, %localappdata%\BoxManager\VM on Windows.
+- Each  configuration is stored in its own folder: ~/.config/BoxManager/VM (on Windows %localappdata%\BoxManager\VM).
 - Each system has it's own nvr folder for non-volatile memory files.
 - Editing system configurations is performed by 86Box itself (thus always up tot date).
 - Run options: start in fullscreen mode and no confirmation on quit (although 86Box seems to ignore --noconfirm regularly).
@@ -20,7 +20,7 @@ Features
 
 Code
 ----
-BoxManager is written in Lazarus 3.4 on Linux. To build and run, just open the .lpr file in Lazarus and hit run :). The bin folder contain prebuild binaries for Debian 12 and Windows. The Windows binary is for compilation check only. Should run on Windows 10, however, not tested regularly.
+BoxManager is written in Lazarus 3.4 on Linux. To build and run, just open the .lpr file in Lazarus and hit run :). It should also compile and run on Windows, however YMMV.
 
   
 
