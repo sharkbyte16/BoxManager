@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <Version Value="12"/>
+    <ManyBuildModesSelection Value="Linux,Windows"/>
+    <BuildModes Active="Linux"/>
+    <Units>
+      <Unit>
+        <Filename Value="BoxManager2.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <CursorPos X="57" Y="12"/>
+        <UsageCount Value="95"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="mainwindow.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="MainForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="MainWindow"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="151"/>
+        <CursorPos X="27" Y="194"/>
+        <UsageCount Value="95"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="vmsystem.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="VMsystem"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="161"/>
+        <CursorPos X="41" Y="202"/>
+        <UsageCount Value="95"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="optionswindow.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="OptionsForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="16"/>
+        <CursorPos X="3" Y="43"/>
+        <UsageCount Value="30"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="vmobject.pas"/>
+        <UnitName Value="VMobject"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="51"/>
+        <UsageCount Value="16"/>
+      </Unit>
+      <Unit>
+        <Filename Value="/usr/share/lazarus/3.4.0/lcl/include/messagedialogs.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="318"/>
+        <CursorPos Y="338"/>
+        <UsageCount Value="11"/>
+      </Unit>
+      <Unit>
+        <Filename Value="/usr/share/lazarus/3.4.0/components/lazutils/lazstringutils.pas"/>
+        <UnitName Value="LazStringUtils"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="214"/>
+        <CursorPos Y="238"/>
+        <UsageCount Value="11"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="29">
+      <Position>
+        <Filename Value="optionswindow.pas"/>
+        <Caret Line="48" Column="3"/>
+      </Position>
+      <Position>
+        <Filename Value="vmsystem.pas"/>
+        <Caret Line="20" Column="28"/>
+      </Position>
+      <Position>
+        <Filename Value="vmsystem.pas"/>
+        <Caret Line="102" Column="24" TopLine="65"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="114" Column="3" TopLine="103"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="169" Column="56" TopLine="161"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="164" Column="52" TopLine="156"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="169" Column="75" TopLine="156"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="164" Column="52" TopLine="156"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="169" Column="56" TopLine="156"/>
+      </Position>
+      <Position>
+        <Filename Value="vmsystem.pas"/>
+        <Caret Line="188" Column="66" TopLine="155"/>
+      </Position>
+      <Position>
+        <Filename Value="vmsystem.pas"/>
+        <Caret Line="190" Column="42" TopLine="161"/>
+      </Position>
+      <Position>
+        <Filename Value="vmsystem.pas"/>
+        <Caret Line="191" Column="39" TopLine="161"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="170" Column="54" TopLine="162"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="150" Column="3" TopLine="139"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="79" TopLine="74"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="150" Column="3" TopLine="142"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="77" Column="56" TopLine="77"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="151" Column="3" TopLine="113"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="33" TopLine="11"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="34" TopLine="11"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="172" Column="3" TopLine="125"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="173" Column="3" TopLine="126"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="172" Column="3" TopLine="125"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="173" Column="3" TopLine="126"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="174" Column="3" TopLine="127"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="175" Column="3" TopLine="128"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="182" Column="3" TopLine="130"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="163" Column="3" TopLine="130"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="188" Column="3" TopLine="135"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="170" Column="27" TopLine="151"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

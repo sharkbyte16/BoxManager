@@ -1,4 +1,4 @@
-program BoxManager;
+program BoxManager2;
 
 {$mode objfpc}{$H+}
 
@@ -9,9 +9,7 @@ uses
   {$IFDEF HASAMIGA}
   athreads,
   {$ENDIF}
-  Interfaces, // this includes the LCL widgetset
-  Forms, Main, Options
-  { you can add units after this };
+  Interfaces, Forms, MainWindow, VMsystem, OptionsWindow;
 
 {$R *.res}
 

@@ -3,8 +3,11 @@
   <ProjectOptions>
     <Version Value="12"/>
     <General>
+      <Flags>
+        <AlwaysBuild Value="True"/>
+      </Flags>
       <SessionStorage Value="InProjectDir"/>
-      <Title Value="BoxManager"/>
+      <Title Value="BoxManager2"/>
       <Scaled Value="True"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
@@ -13,44 +16,58 @@
       </XPManifest>
       <Icon Value="0"/>
     </General>
-    <MacroValues Count="1">
-      <Macro2 Name="LCLWidgetType" Value="gtk2"/>
-    </MacroValues>
+    <VersionInfo>
+      <UseVersionInfo Value="True"/>
+      <AutoIncrementBuild Value="True"/>
+      <BuildNr Value="9"/>
+      <StringTable Comments="Virtual machine manager for 86Box and PCem" InternalName="BoxManager2" ProductName="BoxManager2" ProductVersion="2"/>
+    </VersionInfo>
     <BuildModes>
-      <Item Name="Linux64" Default="True"/>
-      <Item Name="Win64">
-        <MacroValues Count="1">
-          <Macro1 Name="LCLWidgetType" Value="win32"/>
-        </MacroValues>
+      <Item Name="Linux" Default="True"/>
+      <Item Name="Windows">
         <CompilerOptions>
           <Version Value="11"/>
           <Target>
-            <Filename Value="bin/BoxManager"/>
+            <Filename Value="bin/BoxManager2.exe"/>
           </Target>
           <SearchPaths>
             <IncludeFiles Value="$(ProjOutDir)"/>
             <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
           </SearchPaths>
+          <Parsing>
+            <SyntaxOptions>
+              <IncludeAssertionCode Value="True"/>
+              <AllowLabel Value="False"/>
+            </SyntaxOptions>
+          </Parsing>
           <CodeGeneration>
+            <Checks>
+              <IOChecks Value="True"/>
+              <RangeChecks Value="True"/>
+              <OverflowChecks Value="True"/>
+              <StackChecks Value="True"/>
+            </Checks>
+            <VerifyObjMethodCallValidity Value="True"/>
             <TargetCPU Value="x86_64"/>
             <TargetOS Value="win64"/>
+            <Optimizations>
+              <OptimizationLevel Value="0"/>
+            </Optimizations>
           </CodeGeneration>
           <Linking>
-            <Debugging>
-              <DebugInfoType Value="dsDwarf2Set"/>
-            </Debugging>
             <Options>
               <Win32>
                 <GraphicApplication Value="True"/>
               </Win32>
             </Options>
           </Linking>
+          <Other>
+            <Verbosity>
+              <ShowLineNum Value="True"/>
+            </Verbosity>
+          </Other>
         </CompilerOptions>
       </Item>
-      <SharedMatrixOptions Count="2">
-        <Item1 ID="687488771319" Modes="Win64" Type="IDEMacro" MacroName="LCLWidgetType" Value="win32"/>
-        <Item2 ID="283237186486" Modes="Linux64" Type="IDEMacro" MacroName="LCLWidgetType" Value="gtk2"/>
-      </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
@@ -66,52 +83,75 @@
     </RequiredPackages>
     <Units>
       <Unit>
-        <Filename Value="BoxManager.lpr"/>
+        <Filename Value="BoxManager2.lpr"/>
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
-        <Filename Value="main.pas"/>
+        <Filename Value="mainwindow.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="MainForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="Main"/>
+        <UnitName Value="MainWindow"/>
       </Unit>
       <Unit>
-        <Filename Value="data86box.pas"/>
+        <Filename Value="vmsystem.pas"/>
         <IsPartOfProject Value="True"/>
-        <UnitName Value="Data86box"/>
+        <UnitName Value="VMsystem"/>
       </Unit>
       <Unit>
-        <Filename Value="options.pas"/>
+        <Filename Value="optionswindow.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="OptionsForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <UnitName Value="Options"/>
       </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>
     <Target>
-      <Filename Value="bin/BoxManager"/>
+      <Filename Value="bin/BoxManager2"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
       <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
+    <Parsing>
+      <SyntaxOptions>
+        <IncludeAssertionCode Value="True"/>
+        <AllowLabel Value="False"/>
+      </SyntaxOptions>
+    </Parsing>
+    <CodeGeneration>
+      <Checks>
+        <IOChecks Value="True"/>
+        <RangeChecks Value="True"/>
+        <OverflowChecks Value="True"/>
+        <StackChecks Value="True"/>
+      </Checks>
+      <VerifyObjMethodCallValidity Value="True"/>
+      <TargetCPU Value="x86_64"/>
+      <TargetOS Value="linux"/>
+      <Optimizations>
+        <OptimizationLevel Value="0"/>
+      </Optimizations>
+    </CodeGeneration>
     <Linking>
       <Debugging>
-        <DebugInfoType Value="dsDwarf2Set"/>
+        <DebugInfoType Value="dsDwarf3"/>
       </Debugging>
-      <LinkSmart Value="True"/>
       <Options>
         <Win32>
           <GraphicApplication Value="True"/>
         </Win32>
       </Options>
     </Linking>
+    <Other>
+      <Verbosity>
+        <ShowLineNum Value="True"/>
+      </Verbosity>
+    </Other>
   </CompilerOptions>
   <Debugging>
     <Exceptions>
