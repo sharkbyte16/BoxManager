@@ -1,7 +1,3 @@
-{ To do:
-  * full sceen
-  * no confirm on quit
-}
 unit VMsystem;
 
 
@@ -13,7 +9,7 @@ interface
 
 uses
   Classes, SysUtils, StrUtils, Process, Dialogs,
-  FileUtil, LazFileUtils, Controls, LazLoggerBase; // LazLoggerDummy
+  FileUtil, LazFileUtils, Controls, LazLoggerBase; //LazLoggerDummy;
 
 
 const
@@ -100,6 +96,7 @@ var
   // settings
   nrbackups, hdbackupsize : integer;
   noconfirm, fullscreen : integer;
+  exe_86box_present, exe_pcem_present : boolean;
 
 implementation
 
@@ -134,7 +131,14 @@ begin
   // get or set binary 86Box path from config file
   binpathOK := False;
   exe_86box := GetConfigSetting(cfg_boxmanager, 'exe_86box');
-  binpathOK := FileExists(exe_86box);
+  if exe_86box = 'not_present' then begin
+    binpathOK := True;
+    exe_86box_present := False;
+  end
+  else begin
+    binpathOK := FileExists(exe_86box);
+    exe_86box_present := True;
+  end;
   if not binpathOK then begin
     ShowMessage('Could not find the 86Box executable, please specify.');
     repeat
@@ -143,17 +147,34 @@ begin
       OpenDialog.Options := [ofFileMustExist,ofEnableSizing,ofViewDetail];
       OpenDialog.Execute;
       exe_86box := OpenDialog.FileName;
-      binpathOK := FileExists(exe_86box);
+      if FileExists(exe_86box) then begin
+        binpathOK := True;
+        exe_86box_present := True;
+      end
+      else begin
+        binpathOK := (MessageDlg('Question', 'Do you wish to continue without 86Box present? BoxManager will have no added value for use with PCem only...',
+                                    mtConfirmation, [mbYes, mbNo],0) = mrYes);
+        exe_86box := 'not_present';
+        exe_86box_present := False;
+      end;
     until binpathOK;
   end;
   exe_86box_dir := ExtractFilePath(exe_86box);
+  DebugLn(['exe_86box_present = ', exe_86box_present]);
   DebugLn('exe_86box_dir = ' + exe_86box_dir);
   DebugLn('exe_86box = ' + exe_86box);
 
   // get or set binary PCem path from config file
   binpathOK := False;
   exe_pcem := GetConfigSetting(cfg_boxmanager, 'exe_pcem');
-  binpathOK := FileExists(exe_pcem);
+  if exe_pcem = 'not_present' then begin
+    binpathOK := True;
+    exe_pcem_present := False;
+  end
+  else begin
+    binpathOK := FileExists(exe_pcem);
+    exe_pcem_present := True;
+  end;
   if not binpathOK then begin
     ShowMessage('Could not find the PCem executable, please specify.');
     repeat
@@ -162,10 +183,20 @@ begin
       OpenDialog.Options := [ofFileMustExist,ofEnableSizing,ofViewDetail];
       OpenDialog.Execute;
       exe_pcem := OpenDialog.FileName;
-      binpathOK := FileExists(exe_pcem);
+      if FileExists(exe_pcem) then begin
+        binpathOK := True;
+        exe_pcem_present := False;
+      end
+      else begin
+        binpathOK := (MessageDlg('Question', 'Do you wish to continue without PCem present?',
+                                    mtConfirmation, [mbYes, mbNo],0) = mrYes);
+        exe_pcem := 'not_present';
+        exe_pcem_present := False;
+      end;
     until binpathOK;
   end;
   exe_pcem_dir := ExtractFilePath(exe_pcem);
+  DebugLn(['exe_pcem_present = ', exe_pcem_present]);
   DebugLn('exe_pcem_dir = ' + exe_pcem_dir);
   DebugLn('exe_pcem = ' + exe_pcem);
 
@@ -276,61 +307,65 @@ var
   Machine, NVR : String;
 begin
   // Look for 86Box VMs
-  Result := FindFirst(Paths.dir_vm_86box + '*', faDirectory, SearchRec);
-  try
-    while Result = 0 do
-    begin
-      if ((SearchRec.Name <> '.') and (SearchRec.Name <> '..')) then begin
-        PN := Paths.dir_vm_86box + SearchRec.Name;
-        FN := PN + '/'+ SearchRec.Name + '.cfg';
-        if FileExists(FN) then begin
-          Machine := GetConfigSetting(FN, 'machine');
-          NVR := PN + '/nvr/'+ Machine + '.nvr';
-          VMobject := TVMobject.Create;
-          with VMobject do begin
-            Emulator := vm_86box;
-            VMname := SearchRec.Name;
-            Cfg_path := FN;
-            Nvr_path := NVR;
-            GetStorageFromCfg;
+  if exe_86box_present then begin
+    Result := FindFirst(Paths.dir_vm_86box + '*', faDirectory, SearchRec);
+    try
+      while Result = 0 do
+      begin
+        if ((SearchRec.Name <> '.') and (SearchRec.Name <> '..')) then begin
+          PN := Paths.dir_vm_86box + SearchRec.Name;
+          FN := PN + '/'+ SearchRec.Name + '.cfg';
+          if FileExists(FN) then begin
+            Machine := GetConfigSetting(FN, 'machine');
+            NVR := PN + '/nvr/'+ Machine + '.nvr';
+            VMobject := TVMobject.Create;
+            with VMobject do begin
+              Emulator := vm_86box;
+              VMname := SearchRec.Name;
+              Cfg_path := FN;
+              Nvr_path := NVR;
+              GetStorageFromCfg;
+            end;
+            SetLength(VMarr, Length(VMarr)+1);
+            VMarr[Length(VMarr)-1] := VMobject;
           end;
-          SetLength(VMarr, Length(VMarr)+1);
-          VMarr[Length(VMarr)-1] := VMobject;
         end;
+        Result := FindNext(SearchRec);
       end;
-      Result := FindNext(SearchRec);
+    finally
+      FindClose(SearchRec);
     end;
-  finally
-    FindClose(SearchRec);
-  end;
+  end; // exe_86box_present
   // Look for PCem VMs
-  Result := FindFirst(Paths.dir_vm_pcem + '*', faDirectory, SearchRec);
-  try
-    while Result = 0 do
-    begin
-      if ((SearchRec.Name <> '.') and (SearchRec.Name <> '..')) then begin
-        PN := Paths.dir_vm_pcem + SearchRec.Name;
-        FN := PN + '/'+ SearchRec.Name + '.cfg';
-        if FileExists(FN) then begin
-          Machine := GetConfigSetting(FN, 'model');
-          NVR := Paths.exe_pcem_dir + 'nvr/'+ SearchRec.Name + '.' + Machine + '.nvr';
-          VMobject := TVMobject.Create;
-          with VMobject do begin
-            Emulator := vm_pcem;
-            VMname := SearchRec.Name;
-            Cfg_path := FN;
-            Nvr_path := NVR;
-            GetStorageFromCfg;
+  if exe_pcem_present then begin
+    Result := FindFirst(Paths.dir_vm_pcem + '*', faDirectory, SearchRec);
+    try
+      while Result = 0 do
+      begin
+        if ((SearchRec.Name <> '.') and (SearchRec.Name <> '..')) then begin
+          PN := Paths.dir_vm_pcem + SearchRec.Name;
+          FN := PN + '/'+ SearchRec.Name + '.cfg';
+          if FileExists(FN) then begin
+            Machine := GetConfigSetting(FN, 'model');
+            NVR := Paths.exe_pcem_dir + 'nvr/'+ SearchRec.Name + '.' + Machine + '.nvr';
+            VMobject := TVMobject.Create;
+            with VMobject do begin
+              Emulator := vm_pcem;
+              VMname := SearchRec.Name;
+              Cfg_path := FN;
+              Nvr_path := NVR;
+              GetStorageFromCfg;
+            end;
+            SetLength(VMarr, Length(VMarr)+1);
+            VMarr[Length(VMarr)-1] := VMobject;
           end;
-          SetLength(VMarr, Length(VMarr)+1);
-          VMarr[Length(VMarr)-1] := VMobject;
         end;
+        Result := FindNext(SearchRec);
       end;
-      Result := FindNext(SearchRec);
+    finally
+      FindClose(SearchRec);
     end;
-  finally
-    FindClose(SearchRec);
-  end;
+  end; // if exe_pcem_present
 end;
 
 procedure TVMs.LaunchVM(index: integer);

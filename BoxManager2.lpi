@@ -19,7 +19,7 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <BuildNr Value="9"/>
+      <BuildNr Value="12"/>
       <StringTable Comments="Virtual machine manager for 86Box and PCem" InternalName="BoxManager2" ProductName="BoxManager2" ProductVersion="2"/>
     </VersionInfo>
     <BuildModes>
@@ -55,6 +55,9 @@
             </Optimizations>
           </CodeGeneration>
           <Linking>
+            <Debugging>
+              <DebugInfoType Value="dsDwarf3"/>
+            </Debugging>
             <Options>
               <Win32>
                 <GraphicApplication Value="True"/>

@@ -9,7 +9,7 @@
         <Filename Value="BoxManager2.lpr"/>
         <IsPartOfProject Value="True"/>
         <CursorPos X="57" Y="12"/>
-        <UsageCount Value="95"/>
+        <UsageCount Value="98"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -19,11 +19,10 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="MainWindow"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
         <TopLine Value="151"/>
         <CursorPos X="27" Y="194"/>
-        <UsageCount Value="95"/>
+        <UsageCount Value="98"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -31,10 +30,11 @@
         <Filename Value="vmsystem.pas"/>
         <IsPartOfProject Value="True"/>
         <UnitName Value="VMsystem"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="161"/>
-        <CursorPos X="41" Y="202"/>
-        <UsageCount Value="95"/>
+        <TopLine Value="234"/>
+        <CursorPos X="29" Y="176"/>
+        <UsageCount Value="98"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -46,7 +46,7 @@
         <EditorIndex Value="1"/>
         <TopLine Value="16"/>
         <CursorPos X="3" Y="43"/>
-        <UsageCount Value="30"/>
+        <UsageCount Value="33"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -74,34 +74,6 @@
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="optionswindow.pas"/>
-        <Caret Line="48" Column="3"/>
-      </Position>
-      <Position>
-        <Filename Value="vmsystem.pas"/>
-        <Caret Line="20" Column="28"/>
-      </Position>
-      <Position>
-        <Filename Value="vmsystem.pas"/>
-        <Caret Line="102" Column="24" TopLine="65"/>
-      </Position>
-      <Position>
-        <Filename Value="mainwindow.pas"/>
-        <Caret Line="114" Column="3" TopLine="103"/>
-      </Position>
-      <Position>
-        <Filename Value="mainwindow.pas"/>
-        <Caret Line="169" Column="56" TopLine="161"/>
-      </Position>
-      <Position>
-        <Filename Value="mainwindow.pas"/>
-        <Caret Line="164" Column="52" TopLine="156"/>
-      </Position>
-      <Position>
-        <Filename Value="mainwindow.pas"/>
-        <Caret Line="169" Column="75" TopLine="156"/>
-      </Position>
       <Position>
         <Filename Value="mainwindow.pas"/>
         <Caret Line="164" Column="52" TopLine="156"/>
@@ -193,6 +165,34 @@
       <Position>
         <Filename Value="mainwindow.pas"/>
         <Caret Line="170" Column="27" TopLine="151"/>
+      </Position>
+      <Position>
+        <Filename Value="vmsystem.pas"/>
+        <Caret Line="79" Column="23" TopLine="55"/>
+      </Position>
+      <Position>
+        <Filename Value="vmsystem.pas"/>
+        <Caret Line="146" Column="41" TopLine="119"/>
+      </Position>
+      <Position>
+        <Filename Value="vmsystem.pas"/>
+        <Caret Line="150" Column="11" TopLine="129"/>
+      </Position>
+      <Position>
+        <Filename Value="vmsystem.pas"/>
+        <Caret Line="16" Column="68"/>
+      </Position>
+      <Position>
+        <Filename Value="vmsystem.pas"/>
+        <Caret Line="173" Column="17" TopLine="128"/>
+      </Position>
+      <Position>
+        <Filename Value="vmsystem.pas"/>
+        <Caret Line="151" Column="19" TopLine="110"/>
+      </Position>
+      <Position>
+        <Filename Value="vmsystem.pas"/>
+        <Caret Line="163" Column="35" TopLine="137"/>
       </Position>
     </JumpHistory>
     <RunParams>
