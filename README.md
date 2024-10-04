@@ -2,7 +2,7 @@ What is BoxManager?
 ===================
 BoxManager2 is a system configuration manager for the 86Box and PCem PC emulators on Linux. It implements a clone of the PCem interface for use on both emulators.
 
-![alt text](https://github.com/sharkbyte16/BoxManager2/blob/main/images/Screenshot%20BoxManager.png?raw=true)
+![alt text](https://github.com/sharkbyte16/BoxManager/blob/main/images/Screenshot%20BoxManager.png?raw=true)
 
 Why?
 ----
