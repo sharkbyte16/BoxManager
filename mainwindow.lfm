@@ -7,7 +7,7 @@ object MainForm: TMainForm
   ClientHeight = 374
   ClientWidth = 330
   Position = poScreenCenter
-  LCLVersion = '3.4.0.0'
+  LCLVersion = '3.6.0.0'
   object ConfigListBox: TListBox
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner

@@ -650,7 +650,8 @@ var
   HDfilename : string;
   HDsizeMB : Integer;
 begin
-  if nrbackups > 0 then begin
+  // backup if we do backups and the cfg exists
+  if (nrbackups > 0) and FileExistsUTF8(VMarr[index].Cfg_path) then begin
     // backup folder
     DateTimeToString(TimeStamp,'yyyymmdd_hhmmss',Now);
     BAKdir := ExtractFilePath(VMarr[index].Cfg_path) + 'bak/';

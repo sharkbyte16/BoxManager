@@ -101,7 +101,7 @@ begin
                    'In which PC emulator do you want to create VM?',
                     mtInformation,
                     [100, 'PCem', 101, '86Box', 'IsDefault'], '') of
-    100:  TargetEmulator := vm_pcem;
+    100: TargetEmulator := vm_pcem;
     101: TargetEmulator := vm_86box;
     mrCancel: OK := False;
   end;
