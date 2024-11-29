@@ -663,8 +663,10 @@ begin
     if not CopyFile(VMarr[index].Cfg_path, BackupDir + ExtractFileName(VMarr[index].Cfg_path)) then
        ShowMessage('Cannot backup cfg file. Please check directory access rights for '+ BackupDir);
     // nvr
-    if not CopyFile(VMarr[index].Nvr_path, BackupDir + ExtractFileName(VMarr[index].Nvr_path)) then
-       ShowMessage('Cannot backup nvr file. Please check directory access rights for '+ BackupDir);
+    if DirectoryExists(ExtractFilePath(VMarr[index].Cfg_path)+'nvr') then begin
+      if not CopyFile(VMarr[index].Nvr_path, BackupDir + ExtractFileName(VMarr[index].Nvr_path)) then
+         ShowMessage('Cannot backup nvr file. Please check directory access rights for '+ BackupDir);
+    end;
     // hard disk images
     for HD in VMarr[index].Storage do begin
       if ExtractFilePath(HD.Path) = '' then
