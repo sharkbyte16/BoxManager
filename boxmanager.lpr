@@ -1,4 +1,4 @@
-program BoxManager2;
+program boxmanager;
 
 {$mode objfpc}{$H+}
 
@@ -15,6 +15,7 @@ uses
 
 begin
   RequireDerivedFormResource:=True;
+  Application.Title:='BoxManager';
   Application.Scaled:=True;
   Application.Initialize;
   Application.CreateForm(TMainForm, MainForm);

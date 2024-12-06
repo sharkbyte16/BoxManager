@@ -1,16 +1,12 @@
 unit VMsystem;
 
-
 {$mode ObjFPC}{$H+}
 
-
 interface
-
 
 uses
   Classes, SysUtils, StrUtils, Process, Dialogs,
   FileUtil, LazFileUtils, Controls, LazLoggerBase; //LazLoggerDummy;
-
 
 const
   APPNAME='BoxManager2';
@@ -24,31 +20,23 @@ const
   DEFAULT_HDBAKSIZE = 100;
   NOHDBAKSIZE = 1001;
 
-  EmulatorStr: array[0..1] of string = ('86Box', 'PCem');
-
-
 type
   TPaths = class
     cfg_boxmanager : string;             // full path string to BoxManager2.cfg
     exe_86box : string;                  // full path string 86box executable
     exe_86box_dir : string;              // directory path string 86box executable
-    exe_pcem : string;                   // full path string PCem executable
-    exe_pcem_dir : string;               // directory path string PCem executable
     dir_vm : string;                     // directory path string location VM's
     dir_vm_86box : string;               // dir_vm/86box
-    dir_vm_pcem : string;                // dir_vm/pcem
     private
     public
       constructor Create;
   end;
 
-  TEmulator = (vm_86box, vm_pcem);
+  TEmulator = (vm_86box);
 
   TStorageEntry = (
       // harddisk entries in 86box machine config:
-      hdd_01_fn, hdd_02_fn, hdd_03_fn, hdd_04_fn, hdd_05_fn, hdd_06_fn, hdd_07_fn, hdd_08_fn,
-      // harddisk entries in PCem machine config:
-      hdc_fn, hdd_fn, hde_fn, hdf_fn, hdg_fn, hdh_fn, hdi_fn);
+      hdd_01_fn, hdd_02_fn, hdd_03_fn, hdd_04_fn, hdd_05_fn, hdd_06_fn, hdd_07_fn, hdd_08_fn);
 
   TStorage = record
     StorageEntry: TStorageEntry;         // use WriteStr(S, StorageEntry) to get string
@@ -89,14 +77,13 @@ procedure ModifyConfigFilePath(const configFile, oldVMname, newVMname: string);
 procedure PrintVMarr;
 procedure SaveConfig;
 
-
 var
   Paths : TPaths;
   VMs : TVMs;
   // settings
   nrbackups, hdbackupsize : integer;
   noconfirm, fullscreen : integer;
-  exe_86box_present, exe_pcem_present : boolean;
+  exe_86box_present : boolean;
 
 implementation
 
@@ -152,7 +139,7 @@ begin
         exe_86box_present := True;
       end
       else begin
-        binpathOK := (MessageDlg('Question', 'Do you wish to continue without 86Box present? BoxManager will have no added value for use with PCem only...',
+        binpathOK := (MessageDlg('Question', 'Do you wish to continue without 86Box present? BoxManager will have no value without it...',
                                     mtConfirmation, [mbYes, mbNo],0) = mrYes);
         exe_86box := 'not_present';
         exe_86box_present := False;
@@ -163,42 +150,6 @@ begin
   DebugLn(['exe_86box_present = ', exe_86box_present]);
   DebugLn('exe_86box_dir = ' + exe_86box_dir);
   DebugLn('exe_86box = ' + exe_86box);
-
-  // get or set binary PCem path from config file
-  binpathOK := False;
-  exe_pcem := GetConfigSetting(cfg_boxmanager, 'exe_pcem');
-  if exe_pcem = 'not_present' then begin
-    binpathOK := True;
-    exe_pcem_present := False;
-  end
-  else begin
-    binpathOK := FileExists(exe_pcem);
-    exe_pcem_present := True;
-  end;
-  if not binpathOK then begin
-    ShowMessage('Could not find the PCem executable, please specify.');
-    repeat
-      OpenDialog := TOpenDialog.Create(nil);
-      OpenDialog.Title := 'Please specify the full path of the PCem binary';
-      OpenDialog.Options := [ofFileMustExist,ofEnableSizing,ofViewDetail];
-      OpenDialog.Execute;
-      exe_pcem := OpenDialog.FileName;
-      if FileExists(exe_pcem) then begin
-        binpathOK := True;
-        exe_pcem_present := False;
-      end
-      else begin
-        binpathOK := (MessageDlg('Question', 'Do you wish to continue without PCem present?',
-                                    mtConfirmation, [mbYes, mbNo],0) = mrYes);
-        exe_pcem := 'not_present';
-        exe_pcem_present := False;
-      end;
-    until binpathOK;
-  end;
-  exe_pcem_dir := ExtractFilePath(exe_pcem);
-  DebugLn(['exe_pcem_present = ', exe_pcem_present]);
-  DebugLn('exe_pcem_dir = ' + exe_pcem_dir);
-  DebugLn('exe_pcem = ' + exe_pcem);
 
   // get settings
   if not TryStrToInt(GetConfigSetting(cfg_boxmanager, 'nrbackups'), nrbackups) then
@@ -226,7 +177,6 @@ begin
   AssignFile(F, cfg_boxmanager);
   Rewrite(F);
   Writeln(F, 'exe_86box = ' + exe_86box);
-  Writeln(F, 'exe_pcem = ' + exe_pcem);
   Writeln(F, 'nrbackups = ', nrbackups);
   Writeln(F, 'hdbackupsize = ', hdbackupsize);
   Writeln(F, 'noconfirm = ', noconfirm);
@@ -248,15 +198,6 @@ begin
     if not OK then ShowMessage('Failed to create directory '+dir_vm_86box);
   end;
   DebugLn('dir_vm_86box = ' + dir_vm_86box);
-
-  // PCem VM configs dir
-  dir_vm_pcem    := dir_vm + 'pcem/';
-  if OK then begin
-    OK := DirectoryExists(dir_vm_pcem);
-    if not OK then OK := CreateDir(dir_vm_pcem);
-    if not OK then ShowMessage('Failed to create directory '+dir_vm_pcem);
-  end;
-  DebugLn('dir_vm_pcem = ' + dir_vm_pcem);
   DebugLnExit;
 end;
 
@@ -269,7 +210,6 @@ begin
     AssignFile(F, cfg_boxmanager);
     Rewrite(F);
     Writeln(F, 'exe_86box = ' + exe_86box);
-    Writeln(F, 'exe_pcem = ' + exe_pcem);
     Writeln(F, 'nrbackups = ', nrbackups);
     Writeln(F, 'hdbackupsize = ', hdbackupsize);
     Writeln(F, 'noconfirm = ', noconfirm);
@@ -336,36 +276,6 @@ begin
       FindClose(SearchRec);
     end;
   end; // exe_86box_present
-  // Look for PCem VMs
-  if exe_pcem_present then begin
-    Result := FindFirst(Paths.dir_vm_pcem + '*', faDirectory, SearchRec);
-    try
-      while Result = 0 do
-      begin
-        if ((SearchRec.Name <> '.') and (SearchRec.Name <> '..')) then begin
-          PN := Paths.dir_vm_pcem + SearchRec.Name;
-          FN := PN + '/'+ SearchRec.Name + '.cfg';
-          if FileExists(FN) then begin
-            Machine := GetConfigSetting(FN, 'model');
-            NVR := Paths.exe_pcem_dir + 'nvr/'+ SearchRec.Name + '.' + Machine + '.nvr';
-            VMobject := TVMobject.Create;
-            with VMobject do begin
-              Emulator := vm_pcem;
-              VMname := SearchRec.Name;
-              Cfg_path := FN;
-              Nvr_path := NVR;
-              GetStorageFromCfg;
-            end;
-            SetLength(VMarr, Length(VMarr)+1);
-            VMarr[Length(VMarr)-1] := VMobject;
-          end;
-        end;
-        Result := FindNext(SearchRec);
-      end;
-    finally
-      FindClose(SearchRec);
-    end;
-  end; // if exe_pcem_present
 end;
 
 procedure TVMs.LaunchVM(index: integer);
@@ -376,7 +286,6 @@ begin
   if not (index > Length(VMarr)-1) then begin
     with VMarr[index] do begin
       if Emulator = vm_86box then Exe_path := Paths.exe_86box;
-      if Emulator = vm_pcem then Exe_path := Paths.exe_pcem;
       proc := TProcess.Create(nil);
       proc.Executable := Exe_path;
       proc.Parameters.Add('--config');
@@ -398,7 +307,6 @@ var
   OldName : string;
   dir_vm : string;
   machine : string;
-  old_nvr, new_nvr : string;
 begin
   if (index > Length(VMarr)-1) then begin
     ShowMessage('VM index out of range.');
@@ -406,46 +314,24 @@ begin
   end;
   with VMarr[index] do begin
     OldName := VMname;
-    case Emulator of
-      vm_86box: begin
-        dir_vm := Paths.dir_vm_86box;
-        if RenameFile(dir_vm + OldName, dir_vm + NewName) then begin
-           if RenameFile(dir_vm + NewName + '/' + OldName + '.cfg', dir_vm + NewName + '/' + NewName + '.cfg') then begin
-              Cfg_path := dir_vm + NewName + '/' + NewName + '.cfg';
-              ModifyConfigFilePath(Cfg_path, OldName, NewName);
-           end;
-           machine := GetConfigSetting(Cfg_path, 'machine');
-           if not (machine = '') then begin
-             Nvr_path := dir_vm + NewName + '/nvr/' + machine + '.nvr';
-           end;
-           VMname := NewName;
-        end;
-      end;
-      vm_pcem: begin
-        dir_vm := Paths.dir_vm_pcem;
-        if RenameFile(dir_vm + OldName, dir_vm + NewName) then begin
-           if RenameFile(dir_vm + NewName + '/' + OldName + '.cfg', dir_vm + NewName + '/' + NewName + '.cfg') then begin
-              Cfg_path := dir_vm + NewName + '/' + NewName + '.cfg';
-              ModifyConfigFilePath(Cfg_path, OldName, NewName);
-           end;
-           machine := GetConfigSetting(Cfg_path, 'model');
-        end;
-        if not (machine = '') then begin
-          old_nvr := Paths.exe_pcem_dir+'nvr/'+OldName+'.'+machine+'.nvr';
-          new_nvr := Paths.exe_pcem_dir+'nvr/'+NewName+'.'+machine+'.nvr';
-          if RenameFile(old_nvr, new_nvr) then begin
-             Nvr_path := new_nvr;
-          end;
-        end;
-        VMname := NewName;
-      end;
+    dir_vm := Paths.dir_vm_86box;
+    if RenameFile(dir_vm + OldName, dir_vm + NewName) then begin
+       if RenameFile(dir_vm + NewName + '/' + OldName + '.cfg', dir_vm + NewName + '/' + NewName + '.cfg') then begin
+          Cfg_path := dir_vm + NewName + '/' + NewName + '.cfg';
+          ModifyConfigFilePath(Cfg_path, OldName, NewName);
+       end;
+       machine := GetConfigSetting(Cfg_path, 'machine');
+       if not (machine = '') then begin
+         Nvr_path := dir_vm + NewName + '/nvr/' + machine + '.nvr';
+       end;
+       VMname := NewName;
     end;
   end;
 end;
 
 procedure TVMs.CopyVm(index: integer; NewName: string);
 var
-  SourceName, SourceDir, SourceCfg, SourceNvr, machine, dir_vm : string;
+  SourceName, SourceDir, SourceCfg, machine, dir_vm : string;
   NewDir, NewCfg, NewNvr : string;
   InputOK, CopyOK, CfgOK, NvrOK : boolean;
   VMobject : TVMobject;
@@ -460,20 +346,11 @@ begin
     // source info
     SourceName := VMname;
     SourceCfg := Cfg_path;
-    SourceNvr := Nvr_path;
     SourceEm := Emulator;
-    case Emulator of
-         vm_86box: begin
-             dir_vm := Paths.dir_vm_86box;
-             machine := GetConfigSetting(SourceCfg, 'machine');
-           end;
-         vm_pcem: begin
-             dir_vm := Paths.dir_vm_pcem;
-             machine := GetConfigSetting(SourceCfg, 'model');
-           end;
-    end;
+    dir_vm := Paths.dir_vm_86box;
+    machine := GetConfigSetting(SourceCfg, 'machine');
     SourceDir := dir_vm + SourceName + '/';
-    DebugLn(['CopyVM: ', VMname, ' --> ', NewName, ' (', EmulatorStr[Ord(Emulator)], ')']);
+    DebugLn(['CopyVM: ', VMname, ' --> ', NewName]);
 
     // copy the vm
     InputOK := True;
@@ -501,19 +378,8 @@ begin
 
     if CfgOK then begin
       ModifyConfigFilePath(NewCfg, SourceName, NewName);
-      case Emulator of
-         vm_86box: begin
-           NewNvr := NewDir + 'nvr/' + machine + '.nvr';
-           NvrOK := True;
-         end;
-         vm_pcem:  begin
-           NewNvr := Paths.exe_pcem_dir+'nvr/'+NewName+'.'+machine+'.nvr';
-           if FileExists(SourceNvr) then
-             NvrOK := CopyFile(SourceNvr, NewNvr)
-           else
-             NvrOK := True;
-         end;
-      end; // case Emulator
+      NewNvr := NewDir + 'nvr/' + machine + '.nvr';
+      NvrOK := True;
     end;
     DebugLn(['NvrOK = ', NvrOK]);
 
@@ -543,7 +409,7 @@ end;
 
 procedure TVMs.DeleteVm(index: integer);
 var
-  vm_dir, nvr_file, machine : string;
+  vm_dir: string;
 begin
   if (index > Length(VMarr)-1) then begin
     ShowMessage('VM index out of range.');
@@ -555,19 +421,8 @@ begin
 
   with VMarr[index] do begin
     // first delete directory and nvr file
-    case Emulator of
-           vm_86box: begin
-             vm_dir := Paths.dir_vm_86box + VMname + '/';
-             DeleteDirectory(vm_dir, False);
-           end;
-           vm_pcem: begin
-             vm_dir := Paths.dir_vm_pcem + VMname + '/';
-             machine := GetConfigSetting(Cfg_path, 'model');
-             nvr_file := Paths.exe_pcem_dir+'nvr/'+VMname+'.'+machine+'.nvr';
-             DeleteDirectory(vm_dir, False);
-             DeleteFile(nvr_file);
-           end;
-    end; // case
+    vm_dir := Paths.dir_vm_86box + VMname + '/';
+    DeleteDirectory(vm_dir, False);
     // now delete storage array
     Delete(Storage, 0, Length(Storage)-1);
   end; // with VMarr[index]
@@ -587,49 +442,20 @@ begin
       // first backup cfg
       BackupVM(index);
       // now (re)configure the VM
-      case Emulator of
-        vm_86box: begin
-            machine := GetConfigSetting(Cfg_path, 'machine');
-            Exe_path := Paths.exe_86box;
-            proc := TProcess.Create(nil);
-            proc.Executable := Exe_path;
-            proc.Parameters.Add('--settings');
-            proc.Parameters.Add(Cfg_path);
-            proc.Options := proc.Options - [poWaitOnExit];
-            proc.Execute;
-            proc.Free;
-        end;
-        vm_pcem: begin
-            machine := GetConfigSetting(Cfg_path, 'model');
-            if FileExists(Cfg_path) then
-              ShowMessage('PCem cannot be called to directly configure a VM. ' +
-                          'I will launch PCem with the VM instead. ' +
-                          'You can reconfigured the VM while running. ' +
-                          '(Right-click | Misc | Machine | Configure | Machine)')
-            else
-              ShowMessage('PCem cannot be called to directly configure a VM. ' +
-                          'I will launch PCem instead. It will lauch with the default AMI XT clone VM. ' +
-                          'You can reconfigured the VM while running. ' +
-                          '(Right-click | Misc | Machine | Configure | Machine)');
-            LaunchVM(index);
-        end;
-      end; // case Emulator
+      machine := GetConfigSetting(Cfg_path, 'machine');
+      Exe_path := Paths.exe_86box;
+      proc := TProcess.Create(nil);
+      proc.Executable := Exe_path;
+      proc.Parameters.Add('--settings');
+      proc.Parameters.Add(Cfg_path);
+      proc.Options := proc.Options - [poWaitOnExit];
+      proc.Execute;
+      proc.Free;
       // update VMobject
-      case Emulator of
-        vm_86box: begin
-          if not (GetConfigSetting(Cfg_path, 'machine') = machine) then begin
-             DeleteFile(Nvr_path);
-             Nvr_path := Paths.dir_vm_86box + VMname + '/nvr/' + machine + '.nvr';
-             GetStorageFromCfg;
-          end;
-        end;
-        vm_pcem: begin
-          if not (GetConfigSetting(Cfg_path, 'model') = machine) then begin
-             DeleteFile(Nvr_path);
-             Nvr_path := Paths.exe_pcem_dir+'nvr/'+ VMname + '.' + machine +'.nvr';
-             GetStorageFromCfg;
-          end;
-        end;
+      if not (GetConfigSetting(Cfg_path, 'machine') = machine) then begin
+         DeleteFile(Nvr_path);
+         Nvr_path := Paths.dir_vm_86box + VMname + '/nvr/' + machine + '.nvr';
+         GetStorageFromCfg;
       end;
     end; // with VMarr[index]
   end // not out of range
@@ -718,10 +544,7 @@ var
   VMobject : TVMobject;
 begin
   // First create VM dir. If it fails, no need to create VMobject
-  case TargetEm of
-       vm_86box: vm_base_dir := Paths.dir_vm_86box;
-       vm_pcem:  vm_base_dir := Paths.dir_vm_pcem;
-  end;
+  vm_base_dir := Paths.dir_vm_86box;
   New_vm_dir := vm_base_dir + NewName + '/';
   if DirectoryExists(ExcludeTrailingPathDelimiter(New_vm_dir)) then begin
     ShowMessage(New_vm_dir+' already exists');
@@ -858,7 +681,6 @@ begin
   for VMobject in VMs.VMarr do begin
     with VMobject do begin
       DebugLnEnter([i, ': ', VMname]);
-      DebugLn(['Emulator = ', EmulatorStr[Ord(Emulator)]]);
       DebugLn('Cfg_path = ' + Cfg_path);
       DebugLn('Nvr_path = ' + Nvr_path);
       for HD in Storage do begin

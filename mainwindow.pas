@@ -80,7 +80,7 @@ end;
 
 function TMainForm.VMindex : integer;
 begin
-  Result := VMs.IndexOfVM(ConfigListBox.Items[ConfigListBox.ItemIndex].Replace(' (86Box)', '').Replace(' (PCem)', ''));
+  Result := VMs.IndexOfVM(ConfigListBox.Items[ConfigListBox.ItemIndex]);
 end;
 
 procedure TMainForm.ButtonLaunchClick(Sender: TObject);
@@ -93,23 +93,11 @@ procedure TMainForm.ButtonNewVMClick(Sender: TObject);
 var
   NewName: String;
   TargetEmulator: TEmulator;
-  OK: boolean;
 begin
-  OK := True;
   NewName := 'New VM';
-  case QuestionDlg('Target PC emulator',
-                   'In which PC emulator do you want to create VM?',
-                    mtInformation,
-                    [100, 'PCem', 101, '86Box', 'IsDefault'], '') of
-    100: TargetEmulator := vm_pcem;
-    101: TargetEmulator := vm_86box;
-    mrCancel: OK := False;
-  end;
-  if OK then begin
-    if InputQuery('Name for new VM','Enter name:', NewName) then begin
-       VMs.NewVM(NewName, TargetEmulator);
-       UpdateList;
-    end;
+  if InputQuery('Name for new VM','Enter name:', NewName) then begin
+     VMs.NewVM(NewName, TargetEmulator);
+     UpdateList;
   end;
 end;
 
@@ -180,7 +168,7 @@ procedure TMainForm.ConfigListBoxSelectionChange(Sender: TObject);
 var
   SelectedItemIndex : Integer;
 begin
-  SelectedItemIndex := VMs.IndexOfVM(ConfigListBox.Items[ConfigListBox.ItemIndex].Replace(' (86Box)', '').Replace(' (PCem)', ''));
+  SelectedItemIndex := VMs.IndexOfVM(ConfigListBox.Items[ConfigListBox.ItemIndex]);
   DebugLn([ConfigListBox.Items[ConfigListBox.ItemIndex], ' --> VMs.VMarr[', SelectedItemIndex, ']']);
 end;
 
@@ -216,14 +204,11 @@ end;
 procedure TMainForm.UpdateList;
 var
   i: integer;
-  Em, S : String;
 begin
   ConfigListBox.Items.Clear;
     for i := 0 to Length(VMs.VMarr)-1 do begin
       with VMs.VMarr[i] do begin
-        Em := EmulatorStr[Ord(Emulator)];
-        S := VMname+' ('+Em+')';
-        ConfigListBox.Items.Add(S);
+        ConfigListBox.Items.Add(VMname);
       end;
     end;
   if ConfigListBox.Items.Count > 0 then ConfigListBox.ItemIndex := 0;

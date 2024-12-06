@@ -7,7 +7,7 @@
         <AlwaysBuild Value="True"/>
       </Flags>
       <SessionStorage Value="InProjectDir"/>
-      <Title Value="BoxManager2"/>
+      <Title Value="BoxManager"/>
       <Scaled Value="True"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
@@ -20,57 +20,10 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <BuildNr Value="12"/>
-      <StringTable Comments="Virtual machine manager for 86Box and PCem" InternalName="BoxManager2" ProductName="BoxManager2" ProductVersion="2"/>
+      <StringTable Comments="Virtual machine manager for 86Box" InternalName="BoxManager" ProductName="BoxManager" ProductVersion="2"/>
     </VersionInfo>
     <BuildModes>
       <Item Name="Linux" Default="True"/>
-      <Item Name="Windows">
-        <CompilerOptions>
-          <Version Value="11"/>
-          <Target>
-            <Filename Value="bin/BoxManager2.exe"/>
-          </Target>
-          <SearchPaths>
-            <IncludeFiles Value="$(ProjOutDir)"/>
-            <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
-          </SearchPaths>
-          <Parsing>
-            <SyntaxOptions>
-              <IncludeAssertionCode Value="True"/>
-              <AllowLabel Value="False"/>
-            </SyntaxOptions>
-          </Parsing>
-          <CodeGeneration>
-            <Checks>
-              <IOChecks Value="True"/>
-              <RangeChecks Value="True"/>
-              <OverflowChecks Value="True"/>
-              <StackChecks Value="True"/>
-            </Checks>
-            <VerifyObjMethodCallValidity Value="True"/>
-            <TargetCPU Value="x86_64"/>
-            <TargetOS Value="win64"/>
-            <Optimizations>
-              <OptimizationLevel Value="0"/>
-            </Optimizations>
-          </CodeGeneration>
-          <Linking>
-            <Debugging>
-              <DebugInfoType Value="dsDwarf3"/>
-            </Debugging>
-            <Options>
-              <Win32>
-                <GraphicApplication Value="True"/>
-              </Win32>
-            </Options>
-          </Linking>
-          <Other>
-            <Verbosity>
-              <ShowLineNum Value="True"/>
-            </Verbosity>
-          </Other>
-        </CompilerOptions>
-      </Item>
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
@@ -86,7 +39,7 @@
     </RequiredPackages>
     <Units>
       <Unit>
-        <Filename Value="BoxManager2.lpr"/>
+        <Filename Value="boxmanager.lpr"/>
         <IsPartOfProject Value="True"/>
       </Unit>
       <Unit>
@@ -114,7 +67,7 @@
   <CompilerOptions>
     <Version Value="11"/>
     <Target>
-      <Filename Value="bin/BoxManager2"/>
+      <Filename Value="bin/boxmanager"/>
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
@@ -144,11 +97,6 @@
       <Debugging>
         <DebugInfoType Value="dsDwarf3"/>
       </Debugging>
-      <Options>
-        <Win32>
-          <GraphicApplication Value="True"/>
-        </Win32>
-      </Options>
     </Linking>
     <Other>
       <Verbosity>
