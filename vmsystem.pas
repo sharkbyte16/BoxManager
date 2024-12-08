@@ -22,7 +22,8 @@ const
 
 type
   TPaths = class
-    cfg_boxmanager : string;             // full path string to BoxManager2.cfg
+    cfg_boxmanager : string;             // full path string to BoxManager.cfg
+    sysinfo : string;                    // full path string to sysinfo.txt
     exe_86box : string;                  // full path string 86box executable
     exe_86box_dir : string;              // directory path string 86box executable
     dir_vm : string;                     // directory path string location VM's
@@ -41,6 +42,7 @@ type
   TStorage = record
     StorageEntry: TStorageEntry;         // use WriteStr(S, StorageEntry) to get string
     Path: string;                        // full path string to image file
+    SizeMB: double;                     // Size in MB
   end;
 
   TStorageArray = array of TStorage;
@@ -50,6 +52,7 @@ type
     VMname: string;
     Cfg_path: string;
     Nvr_path: string;
+    Info_path: string;
     Storage: TStorageArray;
   private
   public
@@ -97,6 +100,7 @@ begin
   DebugLnEnter('[Paths]');
   cfg_dir        := GetAppConfigDir(False);
   cfg_boxmanager := cfg_dir + 'BoxManager.cfg';
+  sysinfo        := cfg_dir + 'sysinfo.txt';
 
   // open config file or create
   OK := DirectoryExists(cfg_dir);
@@ -114,6 +118,7 @@ begin
     end;
   end;
   DebugLn('cfg_boxmanager = ' + cfg_boxmanager);
+  DebugLn('sysinfo = ' + sysinfo);
 
   // get or set binary 86Box path from config file
   binpathOK := False;
@@ -221,8 +226,9 @@ end;
 procedure TVMobject.GetStorageFromCfg;
 var
   St : TStorage;
-  S : String;
+  S, HDPath : String;
   hdd : TStorageEntry;
+  F : file;
 begin
   // ensure we start with an empty Storage array
   SetLength(Storage, 0);
@@ -231,7 +237,18 @@ begin
     St.StorageEntry := hdd;
     WriteStr(S, St.StorageEntry);
     St.Path := GetConfigSetting(Cfg_path, S);
+    HDPath := ExtractFileDir(St.Path);
+    if HDPath = '' then HDPath := ExtractFilePath(Cfg_path)+St.Path else HDPath := St.Path;
+    St.SizeMB := 0;
     if St.Path <> '' then begin
+      {$I-}
+      Assign (F, HDPath);
+      Reset (F);
+      {$I+}
+      if IOResult = 0 then begin
+        St.SizeMB := (FileSize(F)*128) / 1048576; // FileSize default record size is 128 bytes
+        Close (F);
+      end;
       SetLength(Storage, Length(Storage)+1);
       Storage[Length(Storage)-1] := St;
     end;
@@ -244,7 +261,7 @@ var
   Result : Integer;
   PN, FN : String;
   VMobject : TVMobject;
-  Machine, NVR : String;
+  Machine, NVR, INFO : String;
 begin
   // Look for 86Box VMs
   if exe_86box_present then begin
@@ -255,6 +272,7 @@ begin
         if ((SearchRec.Name <> '.') and (SearchRec.Name <> '..')) then begin
           PN := Paths.dir_vm_86box + SearchRec.Name;
           FN := PN + '/'+ SearchRec.Name + '.cfg';
+          INFO := PN + '/'+ SearchRec.Name + '.info';
           if FileExists(FN) then begin
             Machine := GetConfigSetting(FN, 'machine');
             NVR := PN + '/nvr/'+ Machine + '.nvr';
@@ -264,6 +282,7 @@ begin
               VMname := SearchRec.Name;
               Cfg_path := FN;
               Nvr_path := NVR;
+              Info_path := INFO;
               GetStorageFromCfg;
             end;
             SetLength(VMarr, Length(VMarr)+1);

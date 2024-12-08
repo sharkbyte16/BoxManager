@@ -9,7 +9,7 @@ uses
   {$IFDEF HASAMIGA}
   athreads,
   {$ENDIF}
-  Interfaces, Forms, MainWindow, VMsystem, OptionsWindow;
+  Interfaces, Forms, MainWindow, VMsystem, OptionsWindow, InfoWindow;
 
 {$R *.res}
 
@@ -20,6 +20,7 @@ begin
   Application.Initialize;
   Application.CreateForm(TMainForm, MainForm);
   Application.CreateForm(TOptionsForm, OptionsForm);
+  Application.CreateForm(TInfoForm, InfoForm);
   Application.Run;
 end.
 

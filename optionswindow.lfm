@@ -1,14 +1,14 @@
 object OptionsForm: TOptionsForm
-  Left = 1590
+  Left = 1516
   Height = 197
-  Top = 407
+  Top = 462
   Width = 330
   BorderStyle = bsToolWindow
   Caption = 'Settings'
   ClientHeight = 197
   ClientWidth = 330
   Position = poScreenCenter
-  LCLVersion = '3.4.0.0'
+  LCLVersion = '3.6.0.0'
   object ButtonOK: TButton
     Left = 234
     Height = 25

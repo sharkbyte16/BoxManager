@@ -59,9 +59,8 @@ begin
     Label3.Visible:= True;
   end
   else begin
-      Label3.Caption:= 'HD backup';
+    Label3.Caption:= 'HD backup';
     Label3.Visible:= False;
-
   end;
 end;
 

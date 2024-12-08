@@ -6,14 +6,19 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, MaskEdit,
-  Buttons, Menus, VMsystem, OptionsWindow, LazLogger;
+  Buttons, Menus, ExtCtrls, ComCtrls, VMsystem, OptionsWindow,
+  InfoWindow, LazLogger;
 
 type
 
   { TMainForm }
 
   TMainForm = class(TForm)
+    Bevel1: TBevel;
+    Bevel2: TBevel;
     ConfigListBox: TListBox;
+    Image1: TImage;
+    ImageList1: TImageList;
     MenuItemRun: TMenuItem;
     MenuItemCopy: TMenuItem;
     MenuItemDelete: TMenuItem;
@@ -29,6 +34,7 @@ type
     SpeedButtonCopy: TSpeedButton;
     SpeedButtonDelete: TSpeedButton;
     SpeedButtonQuit: TSpeedButton;
+    SpeedButtonInfo: TSpeedButton;
     procedure ButtonConfigureClick(Sender: TObject);
     procedure ButtonDeleteClick(Sender: TObject);
     procedure ButtonLaunchClick(Sender: TObject);
@@ -42,6 +48,7 @@ type
     procedure ConfigListBoxSelectionChange(Sender: TObject);
     procedure MenuItemRenameClick(Sender: TObject);
     procedure MenuItemRunClick(Sender: TObject);
+    procedure SpeedButtonInfoClick(Sender: TObject);
     procedure SpeedButtonOptionsClick(Sender: TObject);
     procedure SpeedButtonQuitClick(Sender: TObject);
   private
@@ -95,6 +102,7 @@ var
   TargetEmulator: TEmulator;
 begin
   NewName := 'New VM';
+  TargetEmulator := vm_86box;
   if InputQuery('Name for new VM','Enter name:', NewName) then begin
      VMs.NewVM(NewName, TargetEmulator);
      UpdateList;
@@ -180,6 +188,43 @@ end;
 procedure TMainForm.MenuItemRunClick(Sender: TObject);
 begin
   ButtonLaunchClick(Sender);
+end;
+
+procedure TMainForm.SpeedButtonInfoClick(Sender: TObject);
+var
+  S, MHz : string;
+  Mem, hd : Integer;
+begin
+  InfoForm.Caption := VMs.VMarr[VMindex].VMname;
+  S := GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'machine');
+  S := GetConfigSetting(Paths.sysinfo, S);
+  InfoForm.LabelMachineName.Caption := S;
+  S := GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'cpu_family');
+  S := GetConfigSetting(Paths.sysinfo, S);
+  MHz := IntToStr(StrToInt(GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'cpu_speed'))  div 1000000);
+  InfoForm.LabelCPUinfo.Caption := S + ' @ ' + MHz + 'MHz';
+  Mem := StrToInt(GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'mem_size'));
+  if Mem <= 1024 then InfoForm.LabelMB.Caption := IntToStr(Mem) + ' kB'
+     else InfoForm.LabelMB.Caption := IntToStr(Mem div 1024) + ' MB';
+  S := '';
+  if Length(VMs.VMarr[VMindex].Storage) > 0 then begin
+     for hd := 0 to Length(VMs.VMarr[VMindex].Storage)-1 do begin
+       if VMs.VMarr[VMindex].Storage[hd].SizeMB <= 1024 then
+          S := S + 'hd' + IntToStr(hd) + ': '+ FloatToStrF(VMs.VMarr[VMindex].Storage[hd].SizeMB, ffFixed, 15, 1) + ' MB' + Chr(10)
+       else
+          S := S + 'hd' + IntToStr(hd) + ': '+ FloatToStrF(VMs.VMarr[VMindex].Storage[hd].SizeMB/1024, ffFixed, 15, 2) + ' GB' + Chr(10)
+     end;
+     InfoForm.LabelHDMB.Caption := S;
+  end
+  else InfoForm.LabelHDMB.Caption := 'not present';
+  S := ExtractFilePath(VMs.VMarr[VMindex].Cfg_path);
+  if FileExists(S + 'os.txt') then InfoForm.MemoOS.Lines.LoadFromFile(S + 'os.txt');
+  if FileExists(S + 'apps.txt') then InfoForm.MemoApps.Lines.LoadFromFile(S + 'apps.txt');
+  InfoForm.ShowModal;
+  InfoForm.MemoOS.Lines.SaveToFile(S + 'os.txt');
+  InfoForm.MemoOS.Lines.Clear;
+  InfoForm.MemoApps.Lines.SaveToFile(S + 'apps.txt');
+  InfoForm.MemoApps.Lines.Clear;
 end;
 
 procedure TMainForm.SpeedButtonOptionsClick(Sender: TObject);
