@@ -212,6 +212,7 @@ begin
 
   S := GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'gfxcard');
   S := GetConfigSetting(Paths.sysinfo, S);
+  if S = '' then S := 'internal device';
   InfoForm.LabelDisplayCard.Caption := S;
 
   S := GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'sndcard');
