@@ -196,16 +196,29 @@ var
   Mem, hd : Integer;
 begin
   InfoForm.Caption := VMs.VMarr[VMindex].VMname;
+
   S := GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'machine');
   S := GetConfigSetting(Paths.sysinfo, S);
   InfoForm.LabelMachineName.Caption := S;
+
   S := GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'cpu_family');
   S := GetConfigSetting(Paths.sysinfo, S);
   MHz := IntToStr(StrToInt(GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'cpu_speed'))  div 1000000);
   InfoForm.LabelCPUinfo.Caption := S + ' @ ' + MHz + 'MHz';
+
   Mem := StrToInt(GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'mem_size'));
   if Mem <= 1024 then InfoForm.LabelMB.Caption := IntToStr(Mem) + ' kB'
      else InfoForm.LabelMB.Caption := IntToStr(Mem div 1024) + ' MB';
+
+  S := GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'gfxcard');
+  S := GetConfigSetting(Paths.sysinfo, S);
+  InfoForm.LabelDisplayCard.Caption := S;
+
+  S := GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'sndcard');
+  S := GetConfigSetting(Paths.sysinfo, S);
+  if S = '' then S := 'no sound card';
+  InfoForm.LabelSoundCard.Caption := S;
+
   S := '';
   if Length(VMs.VMarr[VMindex].Storage) > 0 then begin
      for hd := 0 to Length(VMs.VMarr[VMindex].Storage)-1 do begin

@@ -13,6 +13,10 @@ type
 
   TInfoForm = class(TForm)
     ButtonOK: TButton;
+    LabelDisplay: TLabel;
+    LabelSound: TLabel;
+    LabelSoundCard: TLabel;
+    LabelDisplayCard: TLabel;
     LabelDisks: TLabel;
     LabelHDMB: TLabel;
     LabelMB: TLabel;

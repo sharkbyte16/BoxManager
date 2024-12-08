@@ -9,7 +9,7 @@
         <Filename Value="boxmanager.lpr"/>
         <IsPartOfProject Value="True"/>
         <CursorPos X="47" Y="23"/>
-        <UsageCount Value="111"/>
+        <UsageCount Value="112"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -21,9 +21,9 @@
         <UnitName Value="MainWindow"/>
         <IsVisibleTab Value="True"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="190"/>
-        <CursorPos X="125" Y="215"/>
-        <UsageCount Value="111"/>
+        <TopLine Value="199"/>
+        <CursorPos X="39" Y="219"/>
+        <UsageCount Value="112"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -34,7 +34,7 @@
         <EditorIndex Value="4"/>
         <TopLine Value="219"/>
         <CursorPos X="39" Y="249"/>
-        <UsageCount Value="111"/>
+        <UsageCount Value="112"/>
         <Loaded Value="True"/>
       </Unit>
       <Unit>
@@ -46,7 +46,7 @@
         <EditorIndex Value="1"/>
         <TopLine Value="23"/>
         <CursorPos X="3" Y="43"/>
-        <UsageCount Value="46"/>
+        <UsageCount Value="47"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -57,9 +57,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="22"/>
-        <CursorPos X="5" Y="60"/>
-        <UsageCount Value="29"/>
+        <CursorPos Y="35"/>
+        <UsageCount Value="30"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit>
@@ -87,34 +86,6 @@
       </Unit>
     </Units>
     <JumpHistory HistoryIndex="29">
-      <Position>
-        <Filename Value="mainwindow.pas"/>
-        <Caret Line="207" TopLine="184"/>
-      </Position>
-      <Position>
-        <Filename Value="mainwindow.pas"/>
-        <Caret Line="206" TopLine="183"/>
-      </Position>
-      <Position>
-        <Filename Value="mainwindow.pas"/>
-        <Caret Line="207" TopLine="184"/>
-      </Position>
-      <Position>
-        <Filename Value="vmsystem.pas"/>
-        <Caret Line="204" Column="10" TopLine="37"/>
-      </Position>
-      <Position>
-        <Filename Value="vmsystem.pas"/>
-        <Caret Line="58" Column="15" TopLine="37"/>
-      </Position>
-      <Position>
-        <Filename Value="vmsystem.pas"/>
-        <Caret Line="225" Column="11" TopLine="209"/>
-      </Position>
-      <Position>
-        <Filename Value="vmsystem.pas"/>
-        <Caret Line="55" Column="5" TopLine="33"/>
-      </Position>
       <Position>
         <Filename Value="vmsystem.pas"/>
         <Caret Line="45" Column="55" TopLine="38"/>
@@ -165,10 +136,6 @@
       </Position>
       <Position>
         <Filename Value="vmsystem.pas"/>
-        <Caret Line="53" Column="13" TopLine="100"/>
-      </Position>
-      <Position>
-        <Filename Value="vmsystem.pas"/>
         <Caret Line="226" Column="38" TopLine="216"/>
       </Position>
       <Position>
@@ -189,10 +156,6 @@
       </Position>
       <Position>
         <Filename Value="vmsystem.pas"/>
-        <Caret Line="45" Column="19" TopLine="62"/>
-      </Position>
-      <Position>
-        <Filename Value="vmsystem.pas"/>
         <Caret Line="249" Column="39" TopLine="219"/>
       </Position>
       <Position>
@@ -206,6 +169,42 @@
       <Position>
         <Filename Value="mainwindow.pas"/>
         <Caret Line="214" Column="125" TopLine="189"/>
+      </Position>
+      <Position>
+        <Filename Value="infowindow.pas"/>
+        <Caret Line="66" Column="5" TopLine="22"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="215" Column="125" TopLine="190"/>
+      </Position>
+      <Position>
+        <Filename Value="infowindow.pas"/>
+        <Caret Line="31"/>
+      </Position>
+      <Position>
+        <Filename Value="infowindow.pas"/>
+        <Caret Line="32"/>
+      </Position>
+      <Position>
+        <Filename Value="infowindow.pas"/>
+        <Caret Line="33"/>
+      </Position>
+      <Position>
+        <Filename Value="infowindow.pas"/>
+        <Caret Line="32"/>
+      </Position>
+      <Position>
+        <Filename Value="infowindow.pas"/>
+        <Caret Line="33"/>
+      </Position>
+      <Position>
+        <Filename Value="infowindow.pas"/>
+        <Caret Line="34"/>
+      </Position>
+      <Position>
+        <Filename Value="mainwindow.pas"/>
+        <Caret Line="219" Column="38" TopLine="190"/>
       </Position>
     </JumpHistory>
     <RunParams>
