@@ -207,7 +207,7 @@ begin
   InfoForm.LabelCPUinfo.Caption := S + ' @ ' + MHz + 'MHz';
 
   Mem := StrToInt(GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'mem_size'));
-  if Mem <= 1024 then InfoForm.LabelMB.Caption := IntToStr(Mem) + ' kB'
+  if Mem <= 2048 then InfoForm.LabelMB.Caption := IntToStr(Mem) + ' kB'
      else InfoForm.LabelMB.Caption := IntToStr(Mem div 1024) + ' MB';
 
   S := GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'gfxcard');
