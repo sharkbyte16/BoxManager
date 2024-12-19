@@ -21,7 +21,7 @@ Features
 - Editing system configurations is performed by 86Box itself (thus always up tot date).
 - Automatic backup of system configurations including the hard disk images (with user adjustable max hard disk image size limit).
 - Run options: start in fullscreen mode (both) and no confirmation on quit.
-- Notes on the installed OS and apps can be added (stored in os.txt and apps.txt in configuration folder)
+- Notes on the installed OS and apps can be added (stored in os.txt and apps.txt in the configuration folder)
 
 Build
 -----
