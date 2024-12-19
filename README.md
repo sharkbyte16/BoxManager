@@ -11,7 +11,7 @@ The slightly longer answer: PCem is great emulator for running retro virtual PCs
 
 Version 2
 ----------
-The first version was my first try to make a Linux application. It was thrown together without design. Version 2 is a complete rewrite with more structured VM management code separated from the GUI code. This also allowed to easily change the GUI in the future.
+The first version was my first try to make a Linux application. It was thrown together without design. Version 2 is a complete rewrite with more structured VM management code separated from the GUI code. This also allowed to easily change the GUI to a more modern look.
 
 Features
 --------
