@@ -1,6 +1,6 @@
 What is BoxManager?
 ===================
-BoxManager is a system configuration manager for the 86Box PC emulator on Linux. It implements a clone of the PCem interface.
+BoxManager is a system configuration manager for the 86Box PC emulator on Linux.
 
 ![alt text](https://github.com/sharkbyte16/BoxManager/blob/main/images/Screenshot%20BoxManager.png?raw=true)
 
