@@ -15,12 +15,13 @@ The first version was my first try to make a Linux application. It was thrown to
 
 Features
 --------
-- Main functions: Adding, renaming, copying, editing and running system configurations of 86Box.
+- Main functions: Adding, renaming, copying, editing, documenting and running system configurations of 86Box.
 - Each  configuration is stored in its own folder in the config folder: ~/.config/BoxManager/VM.
 - Each 86Box system has it's own nvr folder for non-volatile memory files.
 - Editing system configurations is performed by 86Box itself (thus always up tot date).
 - Automatic backup of system configurations including the hard disk images (with user adjustable max hard disk image size limit).
 - Run options: start in fullscreen mode (both) and no confirmation on quit.
+- Notes on the installed OS and apps can be added (stored in os.txt and apps.txt in configuration folder)
 
 Build
 -----

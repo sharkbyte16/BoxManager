@@ -26,6 +26,7 @@ type
     MenuItemFitWindow: TMenuItem;
     MenuItemRename: TMenuItem;
     PopupMenu1: TPopupMenu;
+    Shape1: TShape;
     SpeedButtonLaunch: TSpeedButton;
     SpeedButtonSettings: TSpeedButton;
     SpeedButtonOptions: TSpeedButton;
