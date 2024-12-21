@@ -531,6 +531,15 @@ begin
         end;
       end;
     end;
+    // info
+    if FileExists(ExtractFilePath(VMarr[index].Cfg_path)+'os.txt') then begin
+      if not CopyFile(ExtractFilePath(VMarr[index].Cfg_path)+'os.txt', BackupDir + 'os.txt') then
+         ShowMessage('Cannot backup OS info file. Please check directory access rights for '+ BackupDir);
+    end;
+    if FileExists(ExtractFilePath(VMarr[index].Cfg_path)+'apps.txt') then begin
+      if not CopyFile(ExtractFilePath(VMarr[index].Cfg_path)+'apps.txt', BackupDir + 'apps.txt') then
+         ShowMessage('Cannot backup app info file. Please check directory access rights for '+ BackupDir);
+    end;
   end;
   // cleanup number of backup folder if more than nrbackups, oldest first
   Result := FindFirst(BAKdir + '*', faDirectory, SearchRec);

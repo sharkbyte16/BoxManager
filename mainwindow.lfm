@@ -1285,7 +1285,7 @@ object MainForm: TMainForm
     AnchorSideRight.Side = asrBottom
     Left = 77
     Height = 34
-    Hint = 'Configure'
+    Hint = 'System information'
     Top = 5
     Width = 34
     BorderSpacing.Left = 35
