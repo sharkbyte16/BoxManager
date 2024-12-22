@@ -11,53 +11,53 @@ object InfoForm: TInfoForm
   LCLVersion = '3.6.0.0'
   object LabelSystem: TLabel
     Left = 8
-    Height = 15
+    Height = 16
     Top = 8
     Width = 54
     Caption = 'Machine:'
   end
   object LabelCPU: TLabel
     Left = 8
-    Height = 15
+    Height = 16
     Top = 28
     Width = 28
     Caption = 'CPU:'
   end
   object LabelMem: TLabel
     Left = 8
-    Height = 15
+    Height = 16
     Top = 48
-    Width = 51
+    Width = 53
     Caption = 'Memory:'
   end
   object LabelMachineName: TLabel
     Left = 72
-    Height = 15
+    Height = 16
     Top = 8
-    Width = 117
+    Width = 119
     Caption = 'LabelMachineName'
   end
   object LabelCPUinfo: TLabel
     Left = 72
-    Height = 15
+    Height = 16
     Top = 28
-    Width = 25
+    Width = 27
     Caption = 'MHz'
   end
   object LabelMB: TLabel
     Left = 72
-    Height = 15
+    Height = 16
     Top = 48
-    Width = 18
+    Width = 21
     Caption = 'MB'
   end
   object LabelOS: TLabel
     AnchorSideTop.Control = LabelSound
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 15
-    Top = 133
-    Width = 21
+    Height = 16
+    Top = 136
+    Width = 20
     BorderSpacing.Top = 10
     Caption = 'OS:'
   end
@@ -69,7 +69,7 @@ object InfoForm: TInfoForm
     AnchorSideRight.Side = asrBottom
     Left = 72
     Height = 33
-    Top = 133
+    Top = 136
     Width = 318
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Top = 10
@@ -80,8 +80,8 @@ object InfoForm: TInfoForm
     AnchorSideTop.Control = MemoOS
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 15
-    Top = 176
+    Height = 16
+    Top = 179
     Width = 34
     BorderSpacing.Top = 10
     Caption = 'Apps:'
@@ -94,13 +94,14 @@ object InfoForm: TInfoForm
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = ButtonOK
     Left = 72
-    Height = 208
-    Top = 176
+    Height = 205
+    Top = 179
     Width = 318
     Anchors = [akTop, akLeft, akRight, akBottom]
     BorderSpacing.Top = 10
     BorderSpacing.Right = 10
     BorderSpacing.Bottom = 5
+    ScrollBars = ssAutoBoth
     TabOrder = 1
   end
   object MemoSysInfo: TMemo
@@ -968,7 +969,7 @@ object InfoForm: TInfoForm
   object LabelDisks: TLabel
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 15
+    Height = 16
     Top = 68
     Width = 35
     Caption = 'Disks:'
@@ -978,7 +979,7 @@ object InfoForm: TInfoForm
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
     Left = 72
-    Height = 15
+    Height = 16
     Top = 68
     Width = 318
     Anchors = [akTop, akLeft, akRight]
@@ -989,9 +990,9 @@ object InfoForm: TInfoForm
     AnchorSideTop.Control = LabelHDMB
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 15
-    Top = 88
-    Width = 46
+    Height = 16
+    Top = 89
+    Width = 48
     BorderSpacing.Top = 5
     Caption = 'Display:'
   end
@@ -999,9 +1000,9 @@ object InfoForm: TInfoForm
     AnchorSideTop.Control = LabelDisplay
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 15
-    Top = 108
-    Width = 43
+    Height = 16
+    Top = 110
+    Width = 42
     BorderSpacing.Top = 5
     Caption = 'Sound:'
   end
@@ -1009,9 +1010,9 @@ object InfoForm: TInfoForm
     AnchorSideTop.Control = LabelDisplayCard
     AnchorSideTop.Side = asrBottom
     Left = 72
-    Height = 15
-    Top = 108
-    Width = 87
+    Height = 16
+    Top = 110
+    Width = 86
     BorderSpacing.Top = 5
     Caption = 'no sound card'
   end
@@ -1019,9 +1020,9 @@ object InfoForm: TInfoForm
     AnchorSideTop.Control = LabelHDMB
     AnchorSideTop.Side = asrBottom
     Left = 72
-    Height = 15
-    Top = 88
-    Width = 27
+    Height = 16
+    Top = 89
+    Width = 30
     BorderSpacing.Top = 5
     Caption = 'MDA'
   end

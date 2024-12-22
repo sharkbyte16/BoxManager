@@ -195,6 +195,7 @@ procedure TMainForm.SpeedButtonInfoClick(Sender: TObject);
 var
   S, MHz : string;
   Mem, hd : Integer;
+  SL : TStringList;
 begin
   InfoForm.Caption := VMs.VMarr[VMindex].VMname;
 
@@ -235,6 +236,11 @@ begin
   S := ExtractFilePath(VMs.VMarr[VMindex].Cfg_path);
   if FileExists(S + 'os.txt') then InfoForm.MemoOS.Lines.LoadFromFile(S + 'os.txt');
   if FileExists(S + 'apps.txt') then InfoForm.MemoApps.Lines.LoadFromFile(S + 'apps.txt');
+  SL := TStringList.Create;
+  SL.Assign(InfoForm.MemoApps.Lines);
+  Sl.Sort;
+  InfoForm.MemoApps.Lines.Assign(SL);
+  SL.Free;
   InfoForm.ShowModal;
   InfoForm.MemoOS.Lines.SaveToFile(S + 'os.txt');
   InfoForm.MemoOS.Lines.Clear;
