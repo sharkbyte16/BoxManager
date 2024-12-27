@@ -1635,6 +1635,40 @@ object MainForm: TMainForm
     StretchOutEnabled = False
     StretchInEnabled = False
   end
+  object ComboBoxDGA: TComboBox
+    AnchorSideLeft.Control = SpeedButtonOptions
+    AnchorSideLeft.Side = asrCenter
+    AnchorSideTop.Control = Bevel1
+    AnchorSideRight.Control = SpeedButtonOptions
+    Left = 224
+    Height = 28
+    Top = 8
+    Width = 97
+    Anchors = [akTop, akRight]
+    AutoSelect = False
+    AutoSize = False
+    BorderSpacing.Top = 8
+    BorderSpacing.Right = 5
+    ItemHeight = 0
+    Items.Strings = (
+      'Hercules'
+      'IBM CGA'
+    )
+    TabOrder = 1
+    OnChange = ComboBoxDGAChange
+  end
+  object LabelDGAmode: TLabel
+    AnchorSideTop.Control = Bevel1
+    AnchorSideRight.Control = ComboBoxDGA
+    Left = 151
+    Height = 16
+    Top = 13
+    Width = 68
+    Anchors = [akTop, akRight]
+    BorderSpacing.Top = 13
+    BorderSpacing.Right = 5
+    Caption = 'DGA mode:'
+  end
   object PopupMenu1: TPopupMenu
     Left = 275
     Top = 121

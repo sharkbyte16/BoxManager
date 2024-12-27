@@ -1,18 +1,18 @@
 object OptionsForm: TOptionsForm
-  Left = 1516
-  Height = 197
-  Top = 462
+  Left = 1515
+  Height = 210
+  Top = 459
   Width = 330
   BorderStyle = bsToolWindow
   Caption = 'Settings'
-  ClientHeight = 197
+  ClientHeight = 210
   ClientWidth = 330
   Position = poScreenCenter
   LCLVersion = '3.6.0.0'
   object ButtonOK: TButton
     Left = 234
     Height = 25
-    Top = 159
+    Top = 176
     Width = 75
     Caption = 'OK'
     TabOrder = 0
@@ -39,7 +39,7 @@ object OptionsForm: TOptionsForm
   end
   object CheckGroup1: TCheckGroup
     Left = 8
-    Height = 80
+    Height = 104
     Top = 104
     Width = 160
     AutoFill = True
@@ -52,15 +52,16 @@ object OptionsForm: TOptionsForm
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 1
-    ClientHeight = 64
+    ClientHeight = 87
     ClientWidth = 158
     Items.Strings = (
       'No confirm for exit'
       'Run in full screen'
+      'Simulate Tulip DGA'
     )
     TabOrder = 2
     Data = {
-      020000000202
+      03000000020202
     }
   end
   object Label2: TLabel
@@ -85,9 +86,9 @@ object OptionsForm: TOptionsForm
   end
   object Label3: TLabel
     Left = 176
-    Height = 15
+    Height = 16
     Top = 88
-    Width = 46
+    Width = 47
     Alignment = taRightJustify
     Caption = 'Caption'
     Font.Color = clMaroon

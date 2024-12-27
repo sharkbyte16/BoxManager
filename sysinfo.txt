@@ -462,7 +462,7 @@ p6bap = ECS P6BAP-A+
 cuv4xls = ASUS CUV4X-LS
 vpc2007 = Microsoft Virtual PC 2007
 
-[Video]
+[Sound]
 cs4235 = Crystal CS4235
 cs4235_onboard = Crystal CS4235 (On-Board)
 cs4236b = Crystal CS4236B
@@ -562,7 +562,7 @@ pasplus = Pro Audio Spectrum Plus
 pas16 = Pro Audio Spectrum 16
 pas16d = Pro Audio Spectrum 16D
 
-[Sound]
+[Video]
 8514_isa = IBM 8514/A clone (ISA)
 8514_mca = IBM 8514/A (MCA)
 plantronics = Colorplus

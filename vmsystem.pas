@@ -54,6 +54,7 @@ type
     Nvr_path: string;
     Info_path: string;
     Storage: TStorageArray;
+    Tulip_DGA: string;
   private
   public
     procedure GetStorageFromCfg;
@@ -75,7 +76,9 @@ type
   end;
 
 
-function GetConfigSetting(ConfigFilename : string; SettingName : string) : string;
+function GetConfigSetting(ConfigFilename : string; Section : string; SettingName : string) : string;
+procedure SetConfigSetting(ConfigFilename : string; Section : string; SettingName : string; NewValue : string);
+function ConfigSettingSectionExists(ConfigFilename : string; Section : string) : boolean;
 procedure ModifyConfigFilePath(const configFile, oldVMname, newVMname: string);
 procedure PrintVMarr;
 procedure SaveConfig;
@@ -85,7 +88,7 @@ var
   VMs : TVMs;
   // settings
   nrbackups, hdbackupsize : integer;
-  noconfirm, fullscreen : integer;
+  noconfirm, fullscreen, simulate_dga : integer;
   exe_86box_present : boolean;
 
 implementation
@@ -122,7 +125,7 @@ begin
 
   // get or set binary 86Box path from config file
   binpathOK := False;
-  exe_86box := GetConfigSetting(cfg_boxmanager, 'exe_86box');
+  exe_86box := GetConfigSetting(cfg_boxmanager, '', 'exe_86box');
   if exe_86box = 'not_present' then begin
     binpathOK := True;
     exe_86box_present := False;
@@ -157,25 +160,30 @@ begin
   DebugLn('exe_86box = ' + exe_86box);
 
   // get settings
-  if not TryStrToInt(GetConfigSetting(cfg_boxmanager, 'nrbackups'), nrbackups) then
+  if not TryStrToInt(GetConfigSetting(cfg_boxmanager, '', 'nrbackups'), nrbackups) then
      nrbackups := DEFAULT_NRBAK;
   if nrbackups < 0 then nrbackups := 0;
   DebugLn(['nrbackups = ', nrbackups]);
 
-  if not TryStrToInt(GetConfigSetting(cfg_boxmanager, 'hdbackupsize'), hdbackupsize) then
+  if not TryStrToInt(GetConfigSetting(cfg_boxmanager, '', 'hdbackupsize'), hdbackupsize) then
      hdbackupsize := DEFAULT_HDBAKSIZE;
   if hdbackupsize < 0 then hdbackupsize := 0;
   DebugLn(['hdbackupsize = ', hdbackupsize]);
 
-  if not TryStrToInt(GetConfigSetting(cfg_boxmanager, 'noconfirm'), noconfirm) then
+  if not TryStrToInt(GetConfigSetting(cfg_boxmanager, '', 'noconfirm'), noconfirm) then
      noconfirm := 0;
   if noconfirm < 0 then noconfirm := 0;
   DebugLn(['noconfirm = ', noconfirm]);
 
-  if not TryStrToInt(GetConfigSetting(cfg_boxmanager, 'fullscreen'), fullscreen) then
+  if not TryStrToInt(GetConfigSetting(cfg_boxmanager, '', 'fullscreen'), fullscreen) then
      fullscreen := 0;
   if fullscreen < 0 then fullscreen := 0;
   DebugLn(['fullscreen = ', fullscreen]);
+
+  if not TryStrToInt(GetConfigSetting(cfg_boxmanager, '', 'simulate_dga'), simulate_dga) then
+     simulate_dga := 0;
+  if simulate_dga < 0 then simulate_dga := 0;
+  DebugLn(['simulate_dga = ', simulate_dga]);
 
   // refresh config file
   DebugLn(['Refreshing config file.']);
@@ -186,6 +194,7 @@ begin
   Writeln(F, 'hdbackupsize = ', hdbackupsize);
   Writeln(F, 'noconfirm = ', noconfirm);
   Writeln(F, 'fullscreen = ', fullscreen);
+  Writeln(F, 'simulate_dga = ', simulate_dga);
   Close(F);
 
   // VM configs dir
@@ -219,6 +228,7 @@ begin
     Writeln(F, 'hdbackupsize = ', hdbackupsize);
     Writeln(F, 'noconfirm = ', noconfirm);
     Writeln(F, 'fullscreen = ', fullscreen);
+    Writeln(F, 'simulate_dga = ', simulate_dga);
     Close(F);
   end;
 end;
@@ -236,7 +246,7 @@ begin
   for hdd in TStorageEntry do begin
     St.StorageEntry := hdd;
     WriteStr(S, St.StorageEntry);
-    St.Path := GetConfigSetting(Cfg_path, S);
+    St.Path := GetConfigSetting(Cfg_path, 'Hard disks', S);
     HDPath := ExtractFileDir(St.Path);
     if HDPath = '' then HDPath := ExtractFilePath(Cfg_path)+St.Path else HDPath := St.Path;
     St.SizeMB := 0;
@@ -259,9 +269,12 @@ constructor TVMs.Create;
 var
   SearchRec : TSearchRec;
   Result : Integer;
-  PN, FN : String;
+  PN, FN, S : String;
   VMobject : TVMobject;
   Machine, NVR, INFO : String;
+  i : integer;
+  F : Text;
+  tulipdga : string;
 begin
   // Look for 86Box VMs
   if exe_86box_present then begin
@@ -274,7 +287,7 @@ begin
           FN := PN + '/'+ SearchRec.Name + '.cfg';
           INFO := PN + '/'+ SearchRec.Name + '.info';
           if FileExists(FN) then begin
-            Machine := GetConfigSetting(FN, 'machine');
+            Machine := GetConfigSetting(FN, 'Machine', 'machine');
             NVR := PN + '/nvr/'+ Machine + '.nvr';
             VMobject := TVMobject.Create;
             with VMobject do begin
@@ -295,6 +308,37 @@ begin
       FindClose(SearchRec);
     end;
   end; // exe_86box_present
+  // Check for Tulip DGA card
+  // possible values tulipdga = ['present', 'none']
+  for i := 0 to Length(VMarr)-1 do begin
+    if ConfigSettingSectionExists(VMarr[i].Cfg_path, 'Tulip DGA') then begin
+      S := GetConfigSetting(VMarr[i].Cfg_path, 'Tulip DGA', 'tulipdga');
+      // Current value consistency
+      if (ConfigSettingSectionExists(VMarr[i].Cfg_path, 'Hercules')
+        and ConfigSettingSectionExists(VMarr[i].Cfg_path, 'IBM CGA'))
+        then S := 'present' else S := 'none';
+      SetConfigSetting(VMarr[i].Cfg_path, 'Tulip DGA', 'tulipdga', S);
+      VMarr[i].Tulip_DGA := S;
+    end
+    else begin
+      // Create [Tulip DGA] section
+      if (ConfigSettingSectionExists(VMarr[i].Cfg_path, 'Hercules')
+        and ConfigSettingSectionExists(VMarr[i].Cfg_path, 'IBM CGA'))
+        then S := 'present' else S := 'none';
+      tulipdga := 'tulipdga = '+S;
+      {$i-}
+      Assign (F,VMarr[i].Cfg_path);
+      Append (F);
+      {$I+}
+      if (IoResult=0) then begin
+        Writeln(F);
+        Writeln(F, '[Tulip DGA]');
+        Writeln(F, tulipdga);
+      end;
+      Close(F);
+      VMarr[i].Tulip_DGA := tulipdga;
+    end;
+  end;
 end;
 
 procedure TVMs.LaunchVM(index: integer);
@@ -339,7 +383,7 @@ begin
           Cfg_path := dir_vm + NewName + '/' + NewName + '.cfg';
           ModifyConfigFilePath(Cfg_path, OldName, NewName);
        end;
-       machine := GetConfigSetting(Cfg_path, 'machine');
+       machine := GetConfigSetting(Cfg_path, 'Machine', 'machine');
        if not (machine = '') then begin
          Nvr_path := dir_vm + NewName + '/nvr/' + machine + '.nvr';
        end;
@@ -367,7 +411,7 @@ begin
     SourceCfg := Cfg_path;
     SourceEm := Emulator;
     dir_vm := Paths.dir_vm_86box;
-    machine := GetConfigSetting(SourceCfg, 'machine');
+    machine := GetConfigSetting(SourceCfg, 'Machine', 'machine');
     SourceDir := dir_vm + SourceName + '/';
     DebugLn(['CopyVM: ', VMname, ' --> ', NewName]);
 
@@ -461,7 +505,7 @@ begin
       // first backup cfg
       BackupVM(index);
       // now (re)configure the VM
-      machine := GetConfigSetting(Cfg_path, 'machine');
+      machine := GetConfigSetting(Cfg_path, 'Machine', 'machine');
       Exe_path := Paths.exe_86box;
       proc := TProcess.Create(nil);
       proc.Executable := Exe_path;
@@ -471,7 +515,7 @@ begin
       proc.Execute;
       proc.Free;
       // update VMobject
-      if not (GetConfigSetting(Cfg_path, 'machine') = machine) then begin
+      if not (GetConfigSetting(Cfg_path, 'Machine', 'machine') = machine) then begin
          DeleteFile(Nvr_path);
          Nvr_path := Paths.dir_vm_86box + VMname + '/nvr/' + machine + '.nvr';
          GetStorageFromCfg;
@@ -611,13 +655,40 @@ begin
   Result := index;
 end;
 
-function GetConfigSetting(ConfigFilename : string; SettingName : string) : string;
+function ConfigSettingSectionExists(ConfigFilename : string; Section : string) : boolean;
 var
   F : Text;
-  S, Value : string;
+  S, Sec : string;
+  Exists : boolean;
+begin
+  Sec := '';
+  Exists := False;
+  {$i-}
+  Assign (F,ConfigFilename);
+  Reset (F);
+  {$I+}
+  if (IoResult=0) then begin
+    while not EOF(F) do begin
+      Readln(F, S);
+      if Trim(S) <> '' then
+         if Trim(S[1]) = '[' then begin
+           Sec := Copy(Trim(S), 2, length(Trim(S)) - 2);
+         end;
+      Exists := (Sec = Section) or Exists;
+    end;
+    Close(F);
+  end;
+  Result := Exists;
+end;
+
+function GetConfigSetting(ConfigFilename : string; Section : string; SettingName : string) : string;
+var
+  F : Text;
+  S, Sec, Value : string;
   Delims : TSysCharSet;
 begin
   Value := '';
+  Sec := '';
   Delims := ['='];
   {$i-}
   Assign (F,ConfigFilename);
@@ -626,12 +697,45 @@ begin
   if (IoResult=0) then begin
     while not EOF(F) do begin
       Readln(F, S);
-      if Trim(ExtractDelimited(1, S, Delims)) = SettingName then
-        Value := Trim(ExtractDelimited(2, S, Delims));
+      if Trim(S) <> '' then
+         if Trim(S[1]) = '[' then begin
+           Sec := Copy(Trim(S), 2, length(Trim(S)) - 2);
+         end;
+      if (Trim(ExtractDelimited(1, S, Delims)) = SettingName) and (Sec = Section) then
+         Value := Trim(ExtractDelimited(2, S, Delims));
     end;
     Close(F);
   end;
   Result := Value;
+end;
+
+procedure SetConfigSetting(ConfigFilename : string; Section : string; SettingName : string; NewValue : string);
+var
+  Lines: TStringList;
+  i: Integer;
+  InSection: boolean;
+begin
+  Lines := TStringList.Create;
+  try
+    Lines.LoadFromFile(ConfigFilename);
+    InSection := False;
+
+    for i := 0 to Lines.Count - 1 do
+    begin
+      if Lines[i].Trim.StartsWith('[' + Section + ']') then
+        InSection := True
+      else if Lines[i].Trim.StartsWith('[') then
+        InSection := False
+      else if InSection and Lines[i].StartsWith(SettingName + ' = ') then
+      begin
+        Lines[i] := SettingName + ' = ' + NewValue;
+        Break;
+      end;
+    end;
+    Lines.SaveToFile(ConfigFilename);
+  finally
+    Lines.Free;
+  end;
 end;
 
 procedure ModifyConfigFilePath(const configFile, oldVMname, newVMname: string);
