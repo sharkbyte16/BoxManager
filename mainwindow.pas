@@ -91,7 +91,12 @@ end;
 
 function TMainForm.VMindex : integer;
 begin
-  Result := VMs.IndexOfVM(ConfigListBox.Items[ConfigListBox.ItemIndex]);
+  if ConfigListBox.Count > 0 then begin
+    Result := VMs.IndexOfVM(ConfigListBox.Items[ConfigListBox.ItemIndex]);
+  end
+  else begin
+    Result := -1;
+  end;
 end;
 
 procedure TMainForm.ButtonLaunchClick(Sender: TObject);
@@ -314,8 +319,11 @@ begin
   SpeedButtonDelete.Enabled := ListNotEmpty;
   ComboBoxDGA.Visible := ListNotEmpty and (simulate_dga = 1) and (VMs.VMarr[VMindex].Tulip_DGA = 'present');
   LabelDGAmode.Visible := ListNotEmpty and (simulate_dga = 1) and (VMs.VMarr[VMindex].Tulip_DGA = 'present');
-  S := GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'Video', 'gfxcard');
-  if ComboBoxDGA.Visible and (S = 'hercules') then ComboBoxDGA.ItemIndex := 0 else ComboBoxDGA.ItemIndex := 1;
+  if ListNotEmpty then begin
+    S := GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'Video', 'gfxcard');
+    if ComboBoxDGA.Visible and (S = 'hercules') then ComboBoxDGA.ItemIndex := 0 else ComboBoxDGA.ItemIndex := 1;
+  end
+  else ComboBoxDGA.Visible := False;
 end;
 
 constructor TMainForm.Create(AOwner: TComponent);

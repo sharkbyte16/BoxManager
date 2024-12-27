@@ -314,8 +314,12 @@ begin
     if ConfigSettingSectionExists(VMarr[i].Cfg_path, 'Tulip DGA') then begin
       S := GetConfigSetting(VMarr[i].Cfg_path, 'Tulip DGA', 'tulipdga');
       // Current value consistency
-      if (ConfigSettingSectionExists(VMarr[i].Cfg_path, 'Hercules')
-        and ConfigSettingSectionExists(VMarr[i].Cfg_path, 'IBM CGA'))
+      if ConfigSettingSectionExists(VMarr[i].Cfg_path, 'Hercules')
+        and ConfigSettingSectionExists(VMarr[i].Cfg_path, 'IBM CGA')
+        and (
+             (GetConfigSetting(VMarr[i].Cfg_path, 'Video', 'gfxcard') = 'hercules')
+             or
+             (GetConfigSetting(VMarr[i].Cfg_path, 'Video', 'gfxcard') = 'cga'))
         then S := 'present' else S := 'none';
       SetConfigSetting(VMarr[i].Cfg_path, 'Tulip DGA', 'tulipdga', S);
       VMarr[i].Tulip_DGA := S;
@@ -519,6 +523,7 @@ begin
          DeleteFile(Nvr_path);
          Nvr_path := Paths.dir_vm_86box + VMname + '/nvr/' + machine + '.nvr';
          GetStorageFromCfg;
+
       end;
     end; // with VMarr[index]
   end // not out of range
