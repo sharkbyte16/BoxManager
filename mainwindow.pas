@@ -116,6 +116,7 @@ begin
      VMs.NewVM(NewName, TargetEmulator);
      UpdateList;
   end;
+  ConfigListBox.ItemIndex := ConfigListBox.Count-1;
 end;
 
 procedure TMainForm.ButtonDeleteClick(Sender: TObject);
