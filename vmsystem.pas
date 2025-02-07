@@ -199,6 +199,8 @@ begin
 
   // VM configs dir
   dir_vm         := cfg_dir + 'VMs/';
+  // override default div_vm path with command line argument
+  if paramCount() > 0 then dir_vm := paramStr(1);
   OK := DirectoryExists(dir_vm);
   if not OK then OK := CreateDir(dir_vm);
   if not OK then ShowMessage('Failed to create directory '+dir_vm);
