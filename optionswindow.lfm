@@ -1,12 +1,12 @@
 object OptionsForm: TOptionsForm
   Left = 1515
-  Height = 210
+  Height = 231
   Top = 459
-  Width = 330
+  Width = 316
   BorderStyle = bsToolWindow
   Caption = 'Settings'
-  ClientHeight = 210
-  ClientWidth = 330
+  ClientHeight = 231
+  ClientWidth = 316
   Position = poScreenCenter
   LCLVersion = '3.6.0.0'
   object ButtonOK: TButton
@@ -40,7 +40,7 @@ object OptionsForm: TOptionsForm
   object CheckGroup1: TCheckGroup
     Left = 8
     Height = 104
-    Top = 104
+    Top = 112
     Width = 160
     AutoFill = True
     Caption = 'VM runtime settings'
@@ -94,5 +94,30 @@ object OptionsForm: TOptionsForm
     Font.Color = clMaroon
     ParentFont = False
     Visible = False
+  end
+  object Label4: TLabel
+    Left = 176
+    Height = 16
+    Top = 112
+    Width = 80
+    AutoSize = False
+    Caption = '86Box exe:'
+    WordWrap = True
+  end
+  object SpeedButton1: TSpeedButton
+    Left = 281
+    Height = 22
+    Top = 106
+    Width = 23
+    Images = MainForm.ImageList1
+    ImageIndex = 5
+    OnClick = SpeedButton1Click
+  end
+  object Label5: TLabel
+    Left = 176
+    Height = 16
+    Top = 128
+    Width = 41
+    Caption = 'Label5'
   end
 end

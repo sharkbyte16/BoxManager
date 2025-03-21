@@ -280,12 +280,17 @@ begin
   OptionsForm.CheckGroup1.Checked[2] := (simulate_dga=1);
   OptionsForm.TrackBarBackups.Position := nrbackups;
   OptionsForm.TrackBarHDBackupSize.Position := hdbackupsize;
+  OptionsForm.Label5.Caption:=ExtractFileName(Paths.exe_86box);
+  OptionsForm.exe:=Paths.exe_86box;
+  OptionsForm.exe_dir:=Paths.exe_86box_dir;
   OptionsForm.ShowModal;
   if OptionsForm.CheckGroup1.Checked[0] then noconfirm:=1 else noconfirm:=0;
   if OptionsForm.CheckGroup1.Checked[1] then fullscreen:=1 else fullscreen:=0;
   if OptionsForm.CheckGroup1.Checked[2] then simulate_dga:=1 else simulate_dga:=0;
   nrbackups := OptionsForm.TrackBarBackups.Position;
   hdbackupsize := OptionsForm.TrackBarHDBackupSize.Position;
+  Paths.exe_86box:=OptionsForm.exe;
+  Paths.exe_86box_dir:=OptionsForm.exe_dir;
   SaveConfig;
 end;
 
