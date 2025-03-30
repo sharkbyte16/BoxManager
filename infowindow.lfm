@@ -1,7 +1,7 @@
 object InfoForm: TInfoForm
-  Left = 1516
+  Left = 1515
   Height = 424
-  Top = 701
+  Top = 737
   Width = 400
   Caption = 'VM info'
   ClientHeight = 424

@@ -479,6 +479,7 @@ end;
 procedure TVMs.DeleteVm(index: integer);
 var
   vm_dir: string;
+  vm_name: string;
 begin
   if (index > Length(VMarr)-1) then begin
     ShowMessage('VM index out of range.');
@@ -487,7 +488,13 @@ begin
 
   if MessageDlg('Question', 'Are you sure you want to delete the VM? All the VM files will be lost!',
                 mtConfirmation, [mbYes, mbNo],0) = mrNo then Exit;
-
+  vm_name := 'VM to delete';
+  if InputQuery('Please confirm the name of the VM to delete','Enter name:', vm_name) then begin
+     if vm_name <> VMarr[index].VMname then begin
+        ShowMessage('No matching VM');
+        Exit;
+     end;
+  end;
   with VMarr[index] do begin
     // first delete directory and nvr file
     vm_dir := Paths.dir_vm_86box + VMname + '/';
