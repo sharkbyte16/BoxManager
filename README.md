@@ -7,7 +7,7 @@ BoxManager is a system configuration manager for the 86Box PC emulator on Linux.
 Why?
 ----
 The short answer: To scratch my itch. 
-The slightly longer answer: PCem is great emulator for running retro virtual PCs on Linux. It has a nice no frills GUI to configure and manage the virtual machines. However, at the moment it is in maintenance mode without apparent feature development. 86Box on the other hand is actively developed, has more features and is more accurate. And while the virtual machines settings configurator is good, it lacks a GUI for managing the virtual machines. Hence this program to copy the virtual machine management part of PCem to 86Box.
+The slightly longer answer: PCem is great emulator for running retro virtual PCs on Linux. It has a nice no frills GUI to configure and manage the virtual machines. However, at the moment it is in maintenance mode without apparent feature development. 86Box on the other hand is actively developed, has more features and is more accurate. And while the virtual machines settings configurator is good, it lacks a GUI for managing the virtual machines. Hence this program to manage virtual machines. It started with a copy the of the virtual machine management part of PCem to 86Box, now it has a fresh interface and some additional features.
 
 Features
 --------
