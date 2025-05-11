@@ -31,7 +31,6 @@ type
     MemoOS: TMemo;
     MemoApps: TMemo;
     procedure ButtonOKClick(Sender: TObject);
-    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
   private
 
   public
@@ -50,11 +49,6 @@ implementation
 procedure TInfoForm.ButtonOKClick(Sender: TObject);
 begin
   Close;
-end;
-
-procedure TInfoForm.FormClose(Sender: TObject; var CloseAction: TCloseAction);
-begin
-
 end;
 
 constructor TInfoForm.Create(AOwner: TComponent);

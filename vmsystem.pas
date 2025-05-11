@@ -361,6 +361,7 @@ begin
       proc.Parameters.Add(Cfg_path);
       if ((Emulator = vm_86box) and (noconfirm = 1)) then proc.Parameters.Add('--noconfirm');
       if (fullscreen = 1) then proc.Parameters.Add('--fullscreen');
+      proc.Parameters.Add('--nohook');
       proc.Options := proc.Options - [poWaitOnExit];
       proc.Execute;
       proc.Free;
@@ -393,6 +394,7 @@ begin
        if not (machine = '') then begin
          Nvr_path := dir_vm + NewName + '/nvr/' + machine + '.nvr';
        end;
+       GetStorageFromCfg;
        VMname := NewName;
     end;
   end;

@@ -1,52 +1,51 @@
 object InfoForm: TInfoForm
   Left = 1515
-  Height = 424
-  Top = 737
+  Height = 444
+  Top = 717
   Width = 400
   Caption = 'VM info'
-  ClientHeight = 424
+  ClientHeight = 444
   ClientWidth = 400
-  OnClose = FormClose
   Position = poScreenCenter
   LCLVersion = '3.6.0.0'
   object LabelSystem: TLabel
     Left = 8
-    Height = 16
+    Height = 19
     Top = 8
-    Width = 54
+    Width = 56
     Caption = 'Machine:'
   end
   object LabelCPU: TLabel
     Left = 8
-    Height = 16
+    Height = 19
     Top = 28
-    Width = 28
+    Width = 30
     Caption = 'CPU:'
   end
   object LabelMem: TLabel
     Left = 8
-    Height = 16
+    Height = 19
     Top = 48
-    Width = 53
+    Width = 57
     Caption = 'Memory:'
   end
   object LabelMachineName: TLabel
     Left = 72
-    Height = 16
+    Height = 19
     Top = 8
-    Width = 119
+    Width = 122
     Caption = 'LabelMachineName'
   end
   object LabelCPUinfo: TLabel
     Left = 72
-    Height = 16
+    Height = 19
     Top = 28
-    Width = 27
+    Width = 28
     Caption = 'MHz'
   end
   object LabelMB: TLabel
     Left = 72
-    Height = 16
+    Height = 19
     Top = 48
     Width = 21
     Caption = 'MB'
@@ -55,9 +54,9 @@ object InfoForm: TInfoForm
     AnchorSideTop.Control = LabelSound
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 16
-    Top = 136
-    Width = 20
+    Height = 19
+    Top = 145
+    Width = 21
     BorderSpacing.Top = 10
     Caption = 'OS:'
   end
@@ -68,8 +67,8 @@ object InfoForm: TInfoForm
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
     Left = 72
-    Height = 33
-    Top = 136
+    Height = 39
+    Top = 145
     Width = 318
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Top = 10
@@ -80,9 +79,9 @@ object InfoForm: TInfoForm
     AnchorSideTop.Control = MemoOS
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 16
-    Top = 179
-    Width = 34
+    Height = 19
+    Top = 194
+    Width = 35
     BorderSpacing.Top = 10
     Caption = 'Apps:'
   end
@@ -94,8 +93,8 @@ object InfoForm: TInfoForm
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = ButtonOK
     Left = 72
-    Height = 205
-    Top = 179
+    Height = 210
+    Top = 194
     Width = 318
     Anchors = [akTop, akLeft, akRight, akBottom]
     BorderSpacing.Top = 10
@@ -957,7 +956,7 @@ object InfoForm: TInfoForm
     AnchorSideBottom.Side = asrBottom
     Left = 315
     Height = 25
-    Top = 389
+    Top = 409
     Width = 75
     Anchors = [akRight, akBottom]
     BorderSpacing.Right = 10
@@ -969,9 +968,9 @@ object InfoForm: TInfoForm
   object LabelDisks: TLabel
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 16
+    Height = 19
     Top = 68
-    Width = 35
+    Width = 36
     Caption = 'Disks:'
   end
   object LabelHDMB: TLabel
@@ -979,7 +978,7 @@ object InfoForm: TInfoForm
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
     Left = 72
-    Height = 16
+    Height = 19
     Top = 68
     Width = 318
     Anchors = [akTop, akLeft, akRight]
@@ -990,8 +989,8 @@ object InfoForm: TInfoForm
     AnchorSideTop.Control = LabelHDMB
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 16
-    Top = 89
+    Height = 19
+    Top = 92
     Width = 48
     BorderSpacing.Top = 5
     Caption = 'Display:'
@@ -1000,9 +999,9 @@ object InfoForm: TInfoForm
     AnchorSideTop.Control = LabelDisplay
     AnchorSideTop.Side = asrBottom
     Left = 8
-    Height = 16
-    Top = 110
-    Width = 42
+    Height = 19
+    Top = 116
+    Width = 43
     BorderSpacing.Top = 5
     Caption = 'Sound:'
   end
@@ -1010,8 +1009,8 @@ object InfoForm: TInfoForm
     AnchorSideTop.Control = LabelDisplayCard
     AnchorSideTop.Side = asrBottom
     Left = 72
-    Height = 16
-    Top = 110
+    Height = 19
+    Top = 116
     Width = 86
     BorderSpacing.Top = 5
     Caption = 'no sound card'
@@ -1020,9 +1019,9 @@ object InfoForm: TInfoForm
     AnchorSideTop.Control = LabelHDMB
     AnchorSideTop.Side = asrBottom
     Left = 72
-    Height = 16
-    Top = 89
-    Width = 30
+    Height = 19
+    Top = 92
+    Width = 31
     BorderSpacing.Top = 5
     Caption = 'MDA'
   end
