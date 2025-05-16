@@ -1,10 +1,10 @@
 object InfoForm: TInfoForm
   Left = 1515
-  Height = 444
-  Top = 717
+  Height = 431
+  Top = 730
   Width = 400
   Caption = 'VM info'
-  ClientHeight = 444
+  ClientHeight = 431
   ClientWidth = 400
   Position = poScreenCenter
   LCLVersion = '3.6.0.0'
@@ -93,7 +93,7 @@ object InfoForm: TInfoForm
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = ButtonOK
     Left = 72
-    Height = 210
+    Height = 197
     Top = 194
     Width = 318
     Anchors = [akTop, akLeft, akRight, akBottom]
@@ -956,7 +956,7 @@ object InfoForm: TInfoForm
     AnchorSideBottom.Side = asrBottom
     Left = 315
     Height = 25
-    Top = 409
+    Top = 396
     Width = 75
     Anchors = [akRight, akBottom]
     BorderSpacing.Right = 10

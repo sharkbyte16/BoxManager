@@ -15,15 +15,19 @@ type
   TOptionsForm = class(TForm)
     ButtonOK: TButton;
     CheckGroup1: TCheckGroup;
+    EditCustomVMsettings: TEdit;
     Label1: TLabel;
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
+    Label6: TLabel;
     SpeedButton1: TSpeedButton;
     TrackBarBackups: TTrackBar;
     TrackBarHDBackupSize: TTrackBar;
     procedure ButtonOKClick(Sender: TObject);
+    procedure EditCustomVMsettingsChange(Sender: TObject);
+    procedure Label6Click(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     procedure TrackBarBackupsChange(Sender: TObject);
     procedure TrackBarHDBackupSizeChange(Sender: TObject);
@@ -46,6 +50,16 @@ implementation
 procedure TOptionsForm.ButtonOKClick(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TOptionsForm.EditCustomVMsettingsChange(Sender: TObject);
+begin
+
+end;
+
+procedure TOptionsForm.Label6Click(Sender: TObject);
+begin
+
 end;
 
 procedure TOptionsForm.SpeedButton1Click(Sender: TObject);

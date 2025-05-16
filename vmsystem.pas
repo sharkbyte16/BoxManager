@@ -89,6 +89,7 @@ var
   // settings
   nrbackups, hdbackupsize : integer;
   noconfirm, fullscreen, simulate_dga : integer;
+  other_VM_settings : string;
   exe_86box_present : boolean;
 
 implementation
@@ -185,6 +186,9 @@ begin
   if simulate_dga < 0 then simulate_dga := 0;
   DebugLn(['simulate_dga = ', simulate_dga]);
 
+  other_VM_settings := GetConfigSetting(cfg_boxmanager, '', 'other_VM_settings');
+  DebugLn(['other_VM_settings = ', other_VM_settings]);
+
   // refresh config file
   DebugLn(['Refreshing config file.']);
   AssignFile(F, cfg_boxmanager);
@@ -195,6 +199,7 @@ begin
   Writeln(F, 'noconfirm = ', noconfirm);
   Writeln(F, 'fullscreen = ', fullscreen);
   Writeln(F, 'simulate_dga = ', simulate_dga);
+  Writeln(F, 'other_VM_settings = ', other_VM_settings);
   Close(F);
 
   // VM configs dir
@@ -231,6 +236,7 @@ begin
     Writeln(F, 'noconfirm = ', noconfirm);
     Writeln(F, 'fullscreen = ', fullscreen);
     Writeln(F, 'simulate_dga = ', simulate_dga);
+    Writeln(F, 'other_VM_settings = ', other_VM_settings);
     Close(F);
   end;
 end;
@@ -361,7 +367,7 @@ begin
       proc.Parameters.Add(Cfg_path);
       if ((Emulator = vm_86box) and (noconfirm = 1)) then proc.Parameters.Add('--noconfirm');
       if (fullscreen = 1) then proc.Parameters.Add('--fullscreen');
-      proc.Parameters.Add('--nohook');
+      proc.Parameters.Add(other_VM_settings);
       proc.Options := proc.Options - [poWaitOnExit];
       proc.Execute;
       proc.Free;

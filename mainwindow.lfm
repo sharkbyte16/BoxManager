@@ -1,7 +1,7 @@
 object MainForm: TMainForm
   Left = 1514
   Height = 400
-  Top = 28
+  Top = 32
   Width = 400
   Caption = 'BoxManager'
   ClientHeight = 400
@@ -1660,10 +1660,10 @@ object MainForm: TMainForm
   object LabelDGAmode: TLabel
     AnchorSideTop.Control = Bevel1
     AnchorSideRight.Control = ComboBoxDGA
-    Left = 151
-    Height = 16
+    Left = 147
+    Height = 19
     Top = 13
-    Width = 68
+    Width = 72
     Anchors = [akTop, akRight]
     BorderSpacing.Top = 13
     BorderSpacing.Right = 5
