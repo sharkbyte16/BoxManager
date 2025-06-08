@@ -22,7 +22,8 @@ Features
 
 Build
 -----
-BoxManager is written in Lazarus 3.6+ on Linux. To build and run, just open the .lpr file in Lazarus and hit run :).
+BoxManager is written in Lazarus 3.6+ on Linux. To build, just open the .lpr file in Lazarus.
+The binary folder contains a prebuild executable (build on Linux Mint LMDE 6 / Debian 12) you can try running without building it yourself.
 
   
 
