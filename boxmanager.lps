@@ -2,8 +2,8 @@
 <CONFIG>
   <ProjectSession>
     <Version Value="12"/>
-    <ManyBuildModesSelection Value="Linux,Windows"/>
-    <BuildModes Active="Linux"/>
+    <ManyBuildModesSelection Value="Debug,Release"/>
+    <BuildModes Active="Release"/>
     <Units>
       <Unit>
         <Filename Value="boxmanager.lpr"/>

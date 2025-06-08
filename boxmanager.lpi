@@ -19,11 +19,50 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
+      <MajorVersionNr Value="3"/>
       <BuildNr Value="14"/>
-      <StringTable Comments="Virtual machine manager for 86Box" InternalName="BoxManager" ProductName="BoxManager" ProductVersion="2"/>
+      <StringTable Comments="Virtual machine manager for 86Box" InternalName="BoxManager" ProductName="BoxManager" ProductVersion="3"/>
     </VersionInfo>
     <BuildModes>
-      <Item Name="Linux" Default="True"/>
+      <Item Name="Debug" Default="True"/>
+      <Item Name="Release">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <Target>
+            <Filename Value="binary/boxmanager"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <Parsing>
+            <SyntaxOptions>
+              <AllowLabel Value="False"/>
+            </SyntaxOptions>
+          </Parsing>
+          <CodeGeneration>
+            <SmartLinkUnit Value="True"/>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="linux"/>
+            <Optimizations>
+              <OptimizationLevel Value="3"/>
+            </Optimizations>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+              <RunWithoutDebug Value="True"/>
+              <StripSymbols Value="True"/>
+            </Debugging>
+            <LinkSmart Value="True"/>
+          </Linking>
+          <Other>
+            <Verbosity>
+              <ShowLineNum Value="True"/>
+            </Verbosity>
+          </Other>
+        </CompilerOptions>
+      </Item>
     </BuildModes>
     <PublishOptions>
       <Version Value="2"/>
@@ -98,13 +137,12 @@
       <VerifyObjMethodCallValidity Value="True"/>
       <TargetCPU Value="x86_64"/>
       <TargetOS Value="linux"/>
-      <Optimizations>
-        <OptimizationLevel Value="0"/>
-      </Optimizations>
     </CodeGeneration>
     <Linking>
       <Debugging>
         <DebugInfoType Value="dsDwarf3"/>
+        <UseHeaptrc Value="True"/>
+        <TrashVariables Value="True"/>
       </Debugging>
     </Linking>
     <Other>
