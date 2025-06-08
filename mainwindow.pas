@@ -5,9 +5,11 @@ unit MainWindow;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, MaskEdit,
-  Buttons, Menus, ExtCtrls, ComCtrls, VMsystem, OptionsWindow,
-  InfoWindow, LazLogger;
+  Classes, SysUtils, Forms, Controls, Dialogs, StdCtrls, Buttons, Menus,
+  ExtCtrls, IniFiles,
+  // My units
+  VMsystem, OptionsWindow, InfoWindow;
+
 
 type
 
@@ -101,19 +103,16 @@ end;
 
 procedure TMainForm.ButtonLaunchClick(Sender: TObject);
 begin
-  DebugLn(['Launching ', VMindex, ':  ', VMs.VMarr[VMindex].VMname]);
   VMs.LaunchVM(VMindex);
 end;
 
 procedure TMainForm.ButtonNewVMClick(Sender: TObject);
 var
   NewName: String;
-  TargetEmulator: TEmulator;
 begin
   NewName := 'New VM';
-  TargetEmulator := vm_86box;
   if InputQuery('Name for new VM','Enter name:', NewName) then begin
-     VMs.NewVM(NewName, TargetEmulator);
+     VMs.NewVM(NewName);
      UpdateList;
   end;
   ConfigListBox.ItemIndex := ConfigListBox.Count-1;
@@ -138,7 +137,6 @@ begin
   NewName := OldName;
   if InputQuery('New name','Enter name:', NewName) then begin
     if not (NewName = OldName) then begin
-      DebugLn(['Rename VM index ' , VMindex, ': ', OldName, ' --> ', NewName]);
       VMs.RenameVM(VMindex, NewName);
       UpdateList;
     end;
@@ -153,7 +151,6 @@ begin
   NewName := OldName + ' (Copy)';
   if InputQuery('New name','Enter name:', NewName) then begin
     if not (NewName = OldName) then begin
-      DebugLn(['Copy VM index ' , VMindex, ': ', OldName, ' --> ', NewName]);
       VMs.CopyVM(VMindex, NewName);
       UpdateList;
     end;
@@ -163,15 +160,21 @@ end;
 procedure TMainForm.ComboBoxDGAChange(Sender: TObject);
 var
   SelectedItemIndex : integer;
+  VMINI : TIniFile;
 begin
   SelectedItemIndex := VMs.IndexOfVM(ConfigListBox.Items[ConfigListBox.ItemIndex]);
+  try
+  VMINI := TIniFile.Create(VMs.VMarr[SelectedItemIndex].Cfg_path);
   if ComboBoxDGA.ItemIndex = 0 then begin
     // DGA Hercules mode
-    SetConfigSetting(VMs.VMarr[SelectedItemIndex].Cfg_path, 'Video', 'gfxcard', 'hercules');
+    VMINI.WriteString('Video', 'gfxcard', 'hercules');
   end
   else begin
     // DGA CGA mode
-    SetConfigSetting(VMs.VMarr[SelectedItemIndex].Cfg_path, 'Video', 'gfxcard', 'cga');
+    VMINI.WriteString('Video', 'gfxcard', 'cga');
+  end;
+  finally
+    VMINI.Free;
   end;
 end;
 
@@ -198,11 +201,7 @@ begin
 end;
 
 procedure TMainForm.ConfigListBoxSelectionChange(Sender: TObject);
-var
-  SelectedItemIndex : Integer;
 begin
-  SelectedItemIndex := VMs.IndexOfVM(ConfigListBox.Items[ConfigListBox.ItemIndex]);
-  DebugLn([ConfigListBox.Items[ConfigListBox.ItemIndex], ' --> VMs.VMarr[', SelectedItemIndex, ']']);
   UpdateGUI;
 end;
 
@@ -218,34 +217,50 @@ end;
 
 procedure TMainForm.SpeedButtonInfoClick(Sender: TObject);
 var
-  S, MHz : string;
+  S : string;
+  Machine, CPU_family, CPU_speed, Mem_size, GFXcard, SndCard : String;
+  Machine_name, CPU_name, CPU_MHz, GFXcard_name, SndCard_name : String;
   Mem, hd : Integer;
   SL : TStringList;
+  CfgIni, SysInfoIni : TIniFile;
 begin
   InfoForm.Caption := VMs.VMarr[VMindex].VMname;
 
-  S := GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'Machine', 'machine');
-  S := GetConfigSetting(Paths.sysinfo, 'Machine', S);
-  InfoForm.LabelMachineName.Caption := S;
+  try
+    CfgIni := TIniFile.Create(VMS.VMarr[VMindex].Cfg_path);
+    Machine := CfgIni.ReadString('Machine', 'machine', 'No machine');
+    CPU_family := CfgIni.ReadString('Machine', 'cpu_family', 'No CPU');
+    CPU_speed := CfgIni.ReadString('Machine', 'cpu_speed', '0');
+    Mem_size := CfgIni.ReadString('Machine', 'mem_size', '0');
+    Mem := StrToInt(Mem_size);
+    GFXcard := CfgIni.ReadString('Video', 'gfxcard', 'No graphics card');
+    SndCard := CfgIni.ReadString('Sound', 'sndcard', 'No sound card');
+  finally
+    CfgIni.Free;
+  end;
 
-  S := GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'Machine', 'cpu_family');
-  S := GetConfigSetting(Paths.sysinfo, 'CPU', S);
-  MHz := IntToStr(StrToInt(GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'Machine', 'cpu_speed'))  div 1000000);
-  InfoForm.LabelCPUinfo.Caption := S + ' @ ' + MHz + 'MHz';
+  try
+    SysInfoIni := TIniFile.Create(Settings.sysinfo);
+    Machine_name:= SysInfoIni.ReadString('Machine', Machine, 'Unknown machine');
+    CPU_name := SysInfoIni.ReadString('CPU', CPU_family, 'Unknown CPU');
+    CPU_MHz := IntToStr(StrToInt(CPU_speed)  div 1000000);
+    GFXcard_name := SysInfoIni.ReadString('Video', GFXcard, 'Internal device');
+    SndCard_name := SysInfoIni.ReadString('Sound', SndCard, 'Unknown  sound card');
+  finally
+    SysInfoIni.Free;
+  end;
 
-  Mem := StrToInt(GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'Machine', 'mem_size'));
-  if Mem <= 2048 then InfoForm.LabelMB.Caption := IntToStr(Mem) + ' kB'
-     else InfoForm.LabelMB.Caption := IntToStr(Mem div 1024) + ' MB';
-
-  S := GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'Video', 'gfxcard');
-  S := GetConfigSetting(Paths.sysinfo, 'Video', S);
-  if S = '' then S := 'internal device';
-  InfoForm.LabelDisplayCard.Caption := S;
-
-  S := GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'Sound', 'sndcard');
-  S := GetConfigSetting(Paths.sysinfo, 'Sound', S);
-  if S = '' then S := 'no sound card';
-  InfoForm.LabelSoundCard.Caption := S;
+  InfoForm.LabelMachineName.Caption := Machine_name;
+  InfoForm.LabelCPUinfo.Caption := CPU_name + ' @ ' + CPU_MHz + 'MHz';
+  if Mem <= 2048 then
+     InfoForm.LabelMB.Caption := IntToStr(Mem) + ' kB'
+  else
+     InfoForm.LabelMB.Caption := IntToStr(Mem div 1024) + ' MB';
+  InfoForm.LabelDisplayCard.Caption := GFXcard_name;
+  if SndCard = 'No sound card' then
+    InfoForm.LabelSoundCard.Caption := SndCard
+  else
+    InfoForm.LabelSoundCard.Caption := SndCard_name;
 
   S := '';
   if Length(VMs.VMarr[VMindex].Storage) > 0 then begin
@@ -275,25 +290,25 @@ end;
 
 procedure TMainForm.SpeedButtonOptionsClick(Sender: TObject);
 begin
-  OptionsForm.CheckGroup1.Checked[0] := (noconfirm=1);
-  OptionsForm.CheckGroup1.Checked[1] := (fullscreen=1);
-  OptionsForm.CheckGroup1.Checked[2] := (simulate_dga=1);
-  OptionsForm.TrackBarBackups.Position := nrbackups;
-  OptionsForm.TrackBarHDBackupSize.Position := hdbackupsize;
-  OptionsForm.Label5.Caption:=ExtractFileName(Paths.exe_86box);
-  OptionsForm.exe:=Paths.exe_86box;
-  OptionsForm.exe_dir:=Paths.exe_86box_dir;
-  OptionsForm.EditCustomVMsettings.Text := other_VM_settings;
+  OptionsForm.CheckGroupSettings.Checked[0] := (Settings.noconfirm=1);
+  OptionsForm.CheckGroupSettings.Checked[1] := (Settings.fullscreen=1);
+  OptionsForm.CheckGroupSettings.Checked[2] := (Settings.simulate_dga=1);
+  OptionsForm.TrackBarBackups.Position := Settings.nrbackups;
+  OptionsForm.TrackBarHDBackupSize.Position := Settings.hdbackupsize;
+  OptionsForm.Label86BoxBinarySelected.Caption:=ExtractFileName(Settings.exe_86box);
+  OptionsForm.exe:=Settings.exe_86box;
+  OptionsForm.exe_dir:=Settings.exe_86box_dir;
+  OptionsForm.EditCustomVMOtherSettings.Text := Settings.other_VM_settings;
   OptionsForm.ShowModal;
-  if OptionsForm.CheckGroup1.Checked[0] then noconfirm:=1 else noconfirm:=0;
-  if OptionsForm.CheckGroup1.Checked[1] then fullscreen:=1 else fullscreen:=0;
-  if OptionsForm.CheckGroup1.Checked[2] then simulate_dga:=1 else simulate_dga:=0;
-  nrbackups := OptionsForm.TrackBarBackups.Position;
-  hdbackupsize := OptionsForm.TrackBarHDBackupSize.Position;
-  Paths.exe_86box:=OptionsForm.exe;
-  Paths.exe_86box_dir:=OptionsForm.exe_dir;
-  other_VM_settings := OptionsForm.EditCustomVMsettings.Text;
-  SaveConfig;
+  if OptionsForm.CheckGroupSettings.Checked[0] then Settings.noconfirm:=1 else Settings.noconfirm:=0;
+  if OptionsForm.CheckGroupSettings.Checked[1] then Settings.fullscreen:=1 else Settings.fullscreen:=0;
+  if OptionsForm.CheckGroupSettings.Checked[2] then Settings.simulate_dga:=1 else Settings.simulate_dga:=0;
+  Settings.nrbackups := OptionsForm.TrackBarBackups.Position;
+  Settings.hdbackupsize := OptionsForm.TrackBarHDBackupSize.Position;
+  Settings.exe_86box:=OptionsForm.exe;
+  Settings.exe_86box_dir:=OptionsForm.exe_dir;
+  Settings.other_VM_settings := OptionsForm.EditCustomVMOtherSettings.Text;
+  Settings.SaveConfig;
 end;
 
 procedure TMainForm.SpeedButtonQuitClick(Sender: TObject);
@@ -318,18 +333,24 @@ end;
 procedure TMainForm.UpdateGUI;
 var
   ListNotEmpty : boolean;
-  S : string;
+  VMINI : TIniFile;
+  gfxcard : string;
 begin
   ListNotEmpty := ConfigListBox.Count > 0;
   SpeedButtonSettings.Enabled := ListNotEmpty;
   SpeedButtonRename.Enabled := ListNotEmpty;
   SpeedButtonCopy.Enabled := ListNotEmpty;
   SpeedButtonDelete.Enabled := ListNotEmpty;
-  ComboBoxDGA.Visible := ListNotEmpty and (simulate_dga = 1) and (VMs.VMarr[VMindex].Tulip_DGA = 'present');
-  LabelDGAmode.Visible := ListNotEmpty and (simulate_dga = 1) and (VMs.VMarr[VMindex].Tulip_DGA = 'present');
+  ComboBoxDGA.Visible := ListNotEmpty and (Settings.simulate_dga = 1) and (VMs.VMarr[VMindex].Tulip_DGA = 'present');
+  LabelDGAmode.Visible := ListNotEmpty and (Settings.simulate_dga = 1) and (VMs.VMarr[VMindex].Tulip_DGA = 'present');
   if ListNotEmpty then begin
-    S := GetConfigSetting(VMS.VMarr[VMindex].Cfg_path, 'Video', 'gfxcard');
-    if ComboBoxDGA.Visible and (S = 'hercules') then ComboBoxDGA.ItemIndex := 0 else ComboBoxDGA.ItemIndex := 1;
+    try
+      VMINI := TIniFile.Create(VMS.VMarr[VMindex].Cfg_path);
+      gfxcard := VMINI.ReadString('Video', 'gfxcard', 'No gfxcard');
+    finally
+      VMINI.Free;
+    end;
+    if ComboBoxDGA.Visible and (gfxcard = 'hercules') then ComboBoxDGA.ItemIndex := 0 else ComboBoxDGA.ItemIndex := 1;
   end
   else ComboBoxDGA.Visible := False;
 end;
@@ -337,15 +358,14 @@ end;
 constructor TMainForm.Create(AOwner: TComponent);
 begin
   inherited;
-  Paths := TPaths.Create;
+  Settings := TSettings.Create;
   VMs := TVMs.Create;
   UpdateList;
-  PrintVMarr;
 end;
 
 destructor TMainForm.Destroy;
 begin
-  Paths.Free;
+  Settings.Free;
   VMs.Free;
   inherited;
 end;

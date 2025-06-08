@@ -14,22 +14,19 @@ type
 
   TOptionsForm = class(TForm)
     ButtonOK: TButton;
-    CheckGroup1: TCheckGroup;
-    EditCustomVMsettings: TEdit;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
-    Label6: TLabel;
-    SpeedButton1: TSpeedButton;
+    CheckGroupSettings: TCheckGroup;
+    EditCustomVMOtherSettings: TEdit;
+    LabelNrBackups: TLabel;
+    LabelHDBackupSize: TLabel;
+    LabelHDBackupStatus: TLabel;
+    Label86BoxBinary: TLabel;
+    Label86BoxBinarySelected: TLabel;
+    LabelOtherVMSettings: TLabel;
+    SpeedButtonSelect86BoxBinary: TSpeedButton;
     TrackBarBackups: TTrackBar;
     TrackBarHDBackupSize: TTrackBar;
     procedure ButtonOKClick(Sender: TObject);
-    procedure EditCustomVMsettingsChange(Sender: TObject);
-    procedure Label6Click(Sender: TObject);
-    procedure SpeedButton1Click(Sender: TObject);
-    procedure TrackBarBackupsChange(Sender: TObject);
+    procedure SpeedButtonSelect86BoxBinaryClick(Sender: TObject);
     procedure TrackBarHDBackupSizeChange(Sender: TObject);
   private
 
@@ -52,17 +49,8 @@ begin
   Close;
 end;
 
-procedure TOptionsForm.EditCustomVMsettingsChange(Sender: TObject);
-begin
 
-end;
-
-procedure TOptionsForm.Label6Click(Sender: TObject);
-begin
-
-end;
-
-procedure TOptionsForm.SpeedButton1Click(Sender: TObject);
+procedure TOptionsForm.SpeedButtonSelect86BoxBinaryClick(Sender: TObject);
 var
   OpenDialog : TOpenDialog;
 begin
@@ -72,27 +60,23 @@ begin
       OpenDialog.Execute;
       exe := OpenDialog.FileName;
       exe_dir := ExtractFilePath(exe);
-      Label5.Caption:=ExtractFileName(exe);
+      Label86BoxBinarySelected.Caption:=ExtractFileName(exe);
 end;
 
-procedure TOptionsForm.TrackBarBackupsChange(Sender: TObject);
-begin
-
-end;
 
 procedure TOptionsForm.TrackBarHDBackupSizeChange(Sender: TObject);
 begin
   if TrackBarHDBackupSize.Position = 0 then begin
-    Label3.Caption:= 'HD backup off';
-    Label3.Visible:= True;
+    LabelHDBackupStatus.Caption:= 'HD backup off';
+    LabelHDBackupStatus.Visible:= True;
   end
   else if TrackBarHDBackupSize.Position = TrackBarHDBackupSize.Max then begin
-    Label3.Caption:= 'HD always on';
-    Label3.Visible:= True;
+    LabelHDBackupStatus.Caption:= 'HD always on';
+    LabelHDBackupStatus.Visible:= True;
   end
   else begin
-    Label3.Caption:= 'HD backup';
-    Label3.Visible:= False;
+    LabelHDBackupStatus.Caption:= 'HD backup';
+    LabelHDBackupStatus.Visible:= False;
   end;
 end;
 

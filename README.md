@@ -12,17 +12,17 @@ The slightly longer answer: PCem is great emulator for running retro virtual PCs
 Features
 --------
 - Main functions: Adding, renaming, copying, editing, documenting and running system configurations of 86Box.
-- Each  configuration is stored in its own folder in the config folder: ~/.config/BoxManager/VM.
+- Each  configuration is stored in its own folder in the config folder: ~/.config/BoxManager/VMs.
 - Each 86Box system has it's own nvr folder for non-volatile memory files.
-- Editing system configurations is performed by 86Box itself (thus always up tot date).
+- Editing system configurations is performed by 86Box itself (thus always up to date).
 - Automatic backup of system configurations including the hard disk images (with user adjustable max hard disk image size limit).
-- Run options: start in fullscreen mode (both) and no confirmation on quit.
+- Run options: start in fullscreen mode, no confirmation on quit and a free manual options text field.
 - Notes on the installed OS and apps can be added (stored in os.txt and apps.txt in the configuration folder)
-- Simulation of a Tulip Dual Graphics Adapter (DGA): if DGA enabled in the settings and if both Hercules and IBM CGA settings are present in the VM config file, a selector is shown for easy switching between the two graphic modes.
+- Simulation of a Tulip Dual Graphics Adapter (DGA): if DGA enabled in the settings and if both Hercules and IBM CGA settings are present in the VM config file and one of these is the current graphics card, a selector is shown for easy switching between the two graphic modes.
 
 Build
 -----
-BoxManager is written in Lazarus 3.6 on Linux. To build and run, just open the .lpr file in Lazarus and hit run :).
+BoxManager is written in Lazarus 3.6+ on Linux. To build and run, just open the .lpr file in Lazarus and hit run :).
 
   
 

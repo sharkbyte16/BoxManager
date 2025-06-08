@@ -5,7 +5,14 @@ unit infowindow;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, VMsystem;
+  Classes,
+  SysUtils,
+  Forms,
+  Controls,
+  Graphics,
+  Dialogs,
+  StdCtrls,
+  VMsystem;
 
 type
 
@@ -54,12 +61,11 @@ end;
 constructor TInfoForm.Create(AOwner: TComponent);
 begin
   inherited;
-  If not FileExists(Paths.sysinfo) then begin
-    InfoForm.MemoSysInfo.Lines.SaveToFile(Paths.sysinfo)
-  end
+  If not FileExists(Settings.sysinfo) then
+    InfoForm.MemoSysInfo.Lines.SaveToFile(Settings.sysinfo)
   else
-    InfoForm.MemoSysInfo.Lines.LoadFromFile(Paths.sysinfo);
-  end;
+    InfoForm.MemoSysInfo.Lines.LoadFromFile(Settings.sysinfo);
+end;
 
 end.
 

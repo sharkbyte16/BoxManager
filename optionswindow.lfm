@@ -1,12 +1,12 @@
 object OptionsForm: TOptionsForm
-  Left = 1161
+  Left = 991
   Height = 326
-  Top = 396
-  Width = 314
+  Top = 96
+  Width = 331
   BorderStyle = bsToolWindow
   Caption = 'Settings'
   ClientHeight = 326
-  ClientWidth = 314
+  ClientWidth = 331
   Position = poScreenCenter
   LCLVersion = '3.6.0.0'
   object ButtonOK: TButton
@@ -23,12 +23,11 @@ object OptionsForm: TOptionsForm
     Height = 40
     Top = 56
     Width = 133
-    OnChange = TrackBarBackupsChange
     Position = 0
     ScalePos = trLeft
     TabOrder = 1
   end
-  object Label1: TLabel
+  object LabelNrBackups: TLabel
     Left = 8
     Height = 40
     Top = 8
@@ -37,7 +36,7 @@ object OptionsForm: TOptionsForm
     Caption = 'Number of backups to keep of VM configs:'
     WordWrap = True
   end
-  object CheckGroup1: TCheckGroup
+  object CheckGroupSettings: TCheckGroup
     Left = 8
     Height = 104
     Top = 112
@@ -52,7 +51,7 @@ object OptionsForm: TOptionsForm
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 1
-    ClientHeight = 84
+    ClientHeight = 90
     ClientWidth = 158
     Items.Strings = (
       'No confirm for exit'
@@ -64,7 +63,7 @@ object OptionsForm: TOptionsForm
       03000000020202
     }
   end
-  object Label2: TLabel
+  object LabelHDBackupSize: TLabel
     Left = 176
     Height = 40
     Top = 8
@@ -84,56 +83,54 @@ object OptionsForm: TOptionsForm
     ScalePos = trLeft
     TabOrder = 3
   end
-  object Label3: TLabel
+  object LabelHDBackupStatus: TLabel
     Left = 176
-    Height = 19
+    Height = 13
     Top = 88
-    Width = 47
+    Width = 53
     Alignment = taRightJustify
-    Caption = 'Caption'
+    Caption = 'HD backup'
     Font.Color = clMaroon
     ParentFont = False
     Visible = False
   end
-  object Label4: TLabel
+  object Label86BoxBinary: TLabel
     Left = 176
     Height = 16
     Top = 112
-    Width = 80
+    Width = 136
     AutoSize = False
-    Caption = '86Box exe:'
+    Caption = 'Current 86Box binary:'
     WordWrap = True
   end
-  object SpeedButton1: TSpeedButton
-    Left = 281
+  object SpeedButtonSelect86BoxBinary: TSpeedButton
+    Left = 176
     Height = 22
-    Top = 106
+    Top = 127
     Width = 23
     Images = MainForm.ImageList1
     ImageIndex = 5
-    OnClick = SpeedButton1Click
+    OnClick = SpeedButtonSelect86BoxBinaryClick
   end
-  object Label5: TLabel
-    Left = 176
-    Height = 19
+  object Label86BoxBinarySelected: TLabel
+    Left = 208
+    Height = 13
     Top = 136
-    Width = 41
-    Caption = 'Label5'
+    Width = 29
+    Caption = '86box'
   end
-  object EditCustomVMsettings: TEdit
+  object EditCustomVMOtherSettings: TEdit
     Left = 40
-    Height = 31
+    Height = 25
     Top = 240
     Width = 128
     TabOrder = 4
-    OnChange = EditCustomVMsettingsChange
   end
-  object Label6: TLabel
+  object LabelOtherVMSettings: TLabel
     Left = 40
-    Height = 19
+    Height = 13
     Top = 216
-    Width = 93
-    Caption = 'Other settings:'
-    OnClick = Label6Click
+    Width = 90
+    Caption = 'Other VM settings:'
   end
 end

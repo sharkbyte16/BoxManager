@@ -19,7 +19,7 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <BuildNr Value="12"/>
+      <BuildNr Value="14"/>
       <StringTable Comments="Virtual machine manager for 86Box" InternalName="BoxManager" ProductName="BoxManager" ProductVersion="2"/>
     </VersionInfo>
     <BuildModes>
