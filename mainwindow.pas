@@ -112,10 +112,14 @@ var
 begin
   NewName := 'New VM';
   if InputQuery('Name for new VM','Enter name:', NewName) then begin
-     VMs.NewVM(NewName);
-     UpdateList;
+    // Trim whitespace
+    NewName := Trim(NewName);
+    if NewName <> '' then begin
+      VMs.NewVM(NewName);
+      UpdateList;
+      ConfigListBox.ItemIndex := ConfigListBox.Count-1;
+    end;
   end;
-  ConfigListBox.ItemIndex := ConfigListBox.Count-1;
 end;
 
 procedure TMainForm.ButtonDeleteClick(Sender: TObject);

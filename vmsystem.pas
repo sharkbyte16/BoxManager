@@ -75,6 +75,7 @@ type
     procedure NewVM(NewName: string);
     function IndexOfVM(VMname : string): integer;
     procedure ModifyConfigFilePath(const configFile, oldVMname, newVMname: string);
+    function IsValidVMName(const VMName: string): boolean;
   end;
 
 
@@ -358,6 +359,14 @@ begin
     ShowMessage('VM index out of range.');
     Exit;
   end;
+
+  // Validate VM name first
+  if not IsValidVMName(NewName) then begin
+    ShowMessage('Invalid VM name. Please use only letters, numbers, spaces, and hyphens. Avoid special characters.');
+    Exit;
+  end;
+
+  // If name OK, proceed
   with VMarr[index] do begin
     OldName := VMname;
     dir_vm := Settings.dir_vm_86box;
@@ -394,6 +403,13 @@ begin
     Exit;
   end;
 
+  // Validate VM name first
+  if not IsValidVMName(NewName) then begin
+    ShowMessage('Invalid VM name. Please use only letters, numbers, spaces, and hyphens. Avoid special characters.');
+    Exit;
+  end;
+
+  // If name OK, proceed
   with VMarr[index] do begin
     // source info
     SourceName := VMname;
@@ -615,6 +631,12 @@ var
   NameOK : boolean;
   VMobject : TVMobject;
 begin
+  // Validate VM name first
+  if not IsValidVMName(NewName) then begin
+    ShowMessage('Invalid VM name. Please use only letters, numbers, spaces, and hyphens. Avoid special characters.');
+    Exit;
+  end;
+
   // First create VM dir. If it fails, no need to create VMobject
   vm_base_dir := Settings.dir_vm_86box;
   New_vm_dir := vm_base_dir + NewName + '/';
@@ -669,6 +691,31 @@ begin
   finally
     FileLines.Free;
   end;
+end;
+
+function TVMs.IsValidVMName(const VMName: string): boolean;
+var
+  i: integer;
+  InvalidChars: set of char;
+begin
+  Result := False;
+
+  // Check if name is empty or too long
+  if (Length(VMName) = 0) or (Length(VMName) > 50) then Exit;
+
+  // Define invalid characters for file/directory names
+  InvalidChars := ['/', '\', ':', '*', '?', '"', '<', '>', '|', '.'];
+
+  // Check each character
+  for i := 1 to Length(VMName) do begin
+    if VMName[i] in InvalidChars then Exit;
+  end;
+
+  // Check for reserved names
+  if (UpperCase(VMName) = 'CON') or (UpperCase(VMName) = 'PRN') or
+     (UpperCase(VMName) = 'AUX') or (UpperCase(VMName) = 'NUL') then Exit;
+
+  Result := True;
 end;
 
 end.
