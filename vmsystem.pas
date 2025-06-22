@@ -76,6 +76,7 @@ type
     function IndexOfVM(VMname : string): integer;
     procedure ModifyConfigFilePath(const configFile, oldVMname, newVMname: string);
     function IsValidVMName(const VMName: string): boolean;
+    function IsValidConfigPath(const ConfigPath: string; MustExist : boolean): boolean;
   end;
 
 
@@ -212,6 +213,9 @@ begin
 end;
 
 procedure TVMobject.GetStorageFromCfg;
+const
+  DEFAULT_REC_SIZE = 128;
+  MEGABYTE = 1024*1024;
 var
   St : TStorage;
   S, HDPath : String;
@@ -240,7 +244,7 @@ begin
       Reset (F);
       {$I+}
       if IOResult = 0 then begin
-        St.SizeMB := (FileSize(F)*128) / 1048576; // FileSize default record size is 128 bytes
+        St.SizeMB := (FileSize(F)*DEFAULT_REC_SIZE) / MEGABYTE;
         Close (F);
       end;
       SetLength(Storage, Length(Storage)+1);
@@ -331,6 +335,14 @@ var
 begin
   if not (index > Length(VMarr)-1) then begin
     with VMarr[index] do begin
+
+      // Validate configuration path at execution time, cfg file must exist
+      if not IsValidConfigPath(Cfg_path, True) then begin
+        ShowMessage('Invalid or unsafe configuration file path: ' + Cfg_path);
+        Exit;
+      end;
+
+      // OK, proceed launch
       proc := TProcess.Create(nil);
       proc.Executable := Settings.exe_86box;
       proc.Parameters.Add('--config');
@@ -357,6 +369,12 @@ var
 begin
   if (index > Length(VMarr)-1) then begin
     ShowMessage('VM index out of range.');
+    Exit;
+  end;
+
+  // Validate old configuration path at execution time, cfg file must exist
+  if not IsValidConfigPath(VMarr[index].Cfg_path, True) then begin
+    ShowMessage('Invalid or unsafe configuration file path: ' + VMarr[index].Cfg_path);
     Exit;
   end;
 
@@ -411,6 +429,13 @@ begin
 
   // If name OK, proceed
   with VMarr[index] do begin
+
+    // Validate old configuration path at execution time, cfg file must exist
+    if not IsValidConfigPath(Cfg_path, True) then begin
+      ShowMessage('Invalid or unsafe configuration file path: ' + VMarr[index].Cfg_path);
+      Exit;
+    end;
+
     // source info
     SourceName := VMname;
     dir_vm := Settings.dir_vm_86box;
@@ -498,7 +523,7 @@ begin
     Delete(Storage, 0, Length(Storage)-1);
   end; // with VMarr[index]
 
-  // finally delte the VM from VMarr
+  // finally delete the VM from VMarr
   delete(VMarr, index, 1);
 end;
 
@@ -511,6 +536,11 @@ var
 begin
   if not (index > Length(VMarr)-1) then begin
     with VMarr[index] do begin
+      // Validate configuration path at execution time
+      if not IsValidConfigPath(Cfg_path, False) then begin
+        ShowMessage('Invalid or unsafe configuration file path: ' + Cfg_path);
+        Exit;
+      end;
       // first backup cfg
       BackupVM(index);
       // now (re)configure the VM
@@ -520,6 +550,7 @@ begin
       finally
         INIcfg.Free;
       end;
+      // OK, proceed
       Exe_path := Settings.exe_86box;
       proc := TProcess.Create(nil);
       proc.Executable := Exe_path;
@@ -558,6 +589,11 @@ var
   HDfilename : string;
   HDsizeMB : Integer;
 begin
+  // Validate configuration path at execution time, cfg file must exist
+  if not IsValidConfigPath(VMarr[index].Cfg_path, True) then begin
+    ShowMessage('Invalid or unsafe configuration file path: ' + VMarr[index].Cfg_path);
+    Exit;
+  end;
   // backup if we do backups and the cfg exists
   if (Settings.nrbackups > 0) and FileExistsUTF8(VMarr[index].Cfg_path) then begin
     // backup folder
@@ -627,9 +663,10 @@ end;
 
 procedure TVMs.NewVM(NewName: string);
 var
-  vm_base_dir, New_vm_dir : string;
+  vm_base_dir, New_vm_dir, Cfg_file : string;
   NameOK : boolean;
   VMobject : TVMobject;
+  F : LongInt;
 begin
   // Validate VM name first
   if not IsValidVMName(NewName) then begin
@@ -640,13 +677,25 @@ begin
   // First create VM dir. If it fails, no need to create VMobject
   vm_base_dir := Settings.dir_vm_86box;
   New_vm_dir := vm_base_dir + NewName + '/';
+  Cfg_file := New_vm_dir + NewName + '.cfg';
+
   if DirectoryExists(ExcludeTrailingPathDelimiter(New_vm_dir)) then begin
     ShowMessage(New_vm_dir+' already exists');
     NameOK := False;
   end
   else begin
-    CreateDir(New_vm_dir);
-    NameOK := True;
+    NameOK := CreateDir(New_vm_dir);
+    if not NameOK then ShowMessage('Error creating '+New_vm_dir);
+  end;
+
+  if NameOK then begin
+    F := FileCreate(Cfg_file);
+    if F=-1 then begin
+      ShowMessage('Error creating '+Cfg_file);
+      NameOK := False;
+  end
+  else
+    FileCLose(F)
   end;
 
   if NameOK then begin
@@ -655,6 +704,7 @@ begin
     with VMobject do begin
       VMname := NewName;
       Cfg_path := New_vm_dir + NewName + '.cfg';
+
       // Nvr_path and Storage will be updated by Configure
     end;
     SetLength(VMarr, Length(VMarr)+1);
@@ -714,6 +764,33 @@ begin
   // Check for reserved names
   if (UpperCase(VMName) = 'CON') or (UpperCase(VMName) = 'PRN') or
      (UpperCase(VMName) = 'AUX') or (UpperCase(VMName) = 'NUL') then Exit;
+
+  Result := True;
+end;
+
+function TVMs.IsValidConfigPath(const ConfigPath: string; MustExist : boolean): boolean;
+var
+  CanonicalPath, ExpectedDir: string;
+begin
+  Result := False;
+
+  // Get canonical path (resolves symbolic links)
+  CanonicalPath := ExpandFileName(ConfigPath);
+
+  // Ensure it's within the expected VM directory
+  ExpectedDir := ExpandFileName(Settings.dir_vm_86box);
+  if not AnsiStartsText(ExpectedDir, CanonicalPath) then Exit;
+
+  if MustExist then begin
+     // Check if file exists
+    if not FileExists(ConfigPath) then Exit;
+
+    // Check file extension
+    if not AnsiEndsText('.cfg', LowerCase(ConfigPath)) then Exit;
+
+    // Verify file is readable
+    if not FileIsReadable(ConfigPath) then Exit;
+  end;
 
   Result := True;
 end;
