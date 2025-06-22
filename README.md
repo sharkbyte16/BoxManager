@@ -1,6 +1,6 @@
 What is BoxManager?
 ===================
-BoxManager is a system configuration manager providesa GUI wrapper for the 86Box PC emulator on Linux. It focuses on providing a user-friendly interface for managing virtual machine configurations, automating backups, and organizing VM-related files.
+BoxManager is a system configuration manager that provides a GUI wrapper for the 86Box PC emulator on Linux. It focuses on providing a user-friendly interface for managing virtual machine configurations, automating backups, and organizing VM-related files.
 
 ![alt text](https://github.com/sharkbyte16/BoxManager/blob/main/images/Screenshot%20BoxManager.png?raw=true)
 
@@ -11,7 +11,6 @@ Features
 - Automatic Backups: Configurable backup system with size limits for hard disk images
 - Documentation System: Store OS and application notes per VM
 - Tulip DGA Simulation: Dual Graphics Adapter simulation for switching between Hercules and CGA modes
-- Hardware Information: Comprehensive hardware lookup tables via sysinfo.txt
 - Flexible Launch Options: Fullscreen mode, no-quit confirmation, and custom parameters
 
 Build
