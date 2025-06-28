@@ -7,7 +7,6 @@ object MainForm: TMainForm
   ClientHeight = 400
   ClientWidth = 421
   Position = poScreenCenter
-  LCLVersion = '4.0.0.4'
   object Bevel2: TBevel
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Bevel1

@@ -312,6 +312,12 @@ begin
   Settings.exe_86box:=OptionsForm.exe;
   Settings.exe_86box_dir:=OptionsForm.exe_dir;
   Settings.other_VM_settings := OptionsForm.EditCustomVMOtherSettings.Text;
+  if Settings.other_VM_settings <> '' then begin
+    if MessageDlg('Security risk', 'Adding the following custom options to the 86Box execution might pose a security risk:' + chr(10) + chr(10) +
+                                        Settings.other_VM_settings +  chr(10) + chr(10) +
+                                       'Do you wish to continue with these options?',
+                                      mtConfirmation, [mbYes, mbNo],0) = mrNo then Settings.other_VM_settings := '';
+  end;
   Settings.SaveConfig;
 end;
 
