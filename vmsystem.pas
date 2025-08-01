@@ -257,7 +257,7 @@ constructor TVMs.Create;
 var
   SearchRec : TSearchRec;
   Result : Integer;
-  PN, FN : String;
+  PN, FN, FN_old, FN_new : String;
   VMobject : TVMobject;
   Machine, NVR, INFO : String;
   i : integer;
@@ -273,8 +273,20 @@ begin
       begin
         if ((SearchRec.Name <> '.') and (SearchRec.Name <> '..')) then begin
           PN := Settings.dir_vm_86box + SearchRec.Name;
-          FN := PN + '/'+ SearchRec.Name + '.cfg';
-          INFO := PN + '/'+ SearchRec.Name + '.info';
+          FN_old := PN + '/'+ SearchRec.Name + '.cfg';  // name_of_the_vm.cfg
+          FN_new := PN + '/' + '86box.cfg';             // 86box.cfg
+          FN := FN_new;
+          INFO := PN + '/'+ 'info.txt';
+          // To be compatible with 86box 5.0 transition to 86box.cfg
+          if FileExists(FN_old) and not FileExists(FN_new) then begin
+            // rename old to new
+            if not RenameFile(FN_old, FN_new) then
+               ShowMessage('Failed to rename ' + Chr(13) +
+                           FN_old + Chr(13) +
+                           'to' + Chr(13) +
+                           FN_new);
+          end;
+          // else keep them both but use 86box.cfg
           if FileExists(FN) then begin
             try
               VMINI := TIniFile.Create(FN);
